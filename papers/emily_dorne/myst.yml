@@ -10,6 +10,16 @@ project:
       email: emily@drivendata.org
       affiliations:
         - DrivenData
+    - name: Katie Wetstone
+      email: katie@drivendata.org
+      affiliations:
+        - DrivenData
+    - name: Shobhana Gupta
+      email: shobhana.gupta@nasa.gov
+      affiliations:
+        - NASA
+    - name: Trista Brophy
+      email: brophy.trista@gmail.com
   keywords:
     - cyanobacteria
     - Sentinel-2

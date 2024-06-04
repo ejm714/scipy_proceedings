@@ -21,9 +21,7 @@ While there are established methods for using satellite imagery to detect cyanob
 
 CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and straightfoward command line interface.
 
-The first section of this paper will give an overview of the origins of CyFi along with the underlying methods. The second portion will focus on CyFi's primary capabilities, intended uses, and areas for future work.
-
-// This paper presents a detailed examination of the development of CyFi, exploring the algorithm's evolution, the dynamics of the prize competition that shaped it, and the broader implications of such competitions for scientific advancements. 
+This paper presents a detailed examination of the development of CyFi, exploring the algorithm's evolution, the dynamics of the prize competition and subsequent experimentation that shaped it, and the broader implications of such competitions for scientific advancements. 
 
 # Motivation
 
@@ -37,7 +35,9 @@ The ecological impacts of HABs are equally devastating. They can create hypoxic 
 
 Economically, HABs can cripple local industries reliant on water resources, such as fisheries, tourism, and recreation. Beaches and lakeside areas affected by algal blooms often face closures, leading to a loss of revenue from tourism and recreational activities. The cost of managing and mitigating the effects of HABs, including water treatment and healthcare expenses, places additional financial burdens on affected communities.
 
-Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality. Existing satellite-based monitoring tools offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. One of the leading satellite-based tools for cyanobacteria detection is the [CyAN index](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks.
+Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
+
+Existing satellite-based monitoring tools offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. One of the leading satellite-based tools for cyanobacteria detection is the [CyAN index](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks.
 
 The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
 
@@ -87,32 +87,50 @@ TODO: competition results
 
 ## Carrying foward competition models
 
-Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. The outputs of machine learning competitions include winning model code, trained model, and write ups. The desired outcome is regular predictions of cyanobacteria levels for given latitude and longitude points within small water bodies across the US. This enables ongoing detection of unsafe bacteria counts to inform advisories and protect public health and safety. There remains a “missing middle” of implementation that bridges the gap between static research code and the ability to use regularly generated predictions from the model. CyFi aims to bridge that gap.
-
-// The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. However, the outputs of a machine learning competition are typically closer to reserach code than production code. There remains an understandable gap between the outputs of a competition (e.g. winning model code, trained model, and write ups) and the ability to use regularly generated predictions from the model.
 
 This gap exists for a few reasons. First, competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data. Second, winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters. Third, competition code is validated once with anticipated, clean data. In the real world things break and change; use requires basic robustness, testing and configurability. Lastly, there is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
 
-In carrying forward winning models, we aimed to assess performance & efficiency opportunities, simplify & restructure code to transform it into a runnable pipeline, and engineer clean, reproducible repository, access points for processing new data, tests, & continuous integration. The output (CyFi) is a clean, configurable code package capable of generating predictions on new input data.
+The next step toward regularly generated predictions of cyanobacteria levels that can be used to inform advisories and protect public health and safety is a deployment-ready code package. In developing this, we assessed model performance and efficiency opportunities, combined and iterated the most useful pieces of the winning approaches into a single model, and simplified and restructured code to transform it into a runnable pipeline. We engineered a clean, reproducible repository with access points for processing new data along with tests and continuous integration.
+
+The result is CyFi, a configurable code package capable of generating cyanobacteria predictions on new input data, ready to be integrated into state-level dashboards and embedded into decision-making processes.
 
 ### User interviews
 
-CyFi is not intended to be the end of the story. More work is needed to integrate CyFi in state-level dashboards and make it an integral part of decision-making workflow. That said, we conducted a number of user interviews that can inform the technical development of CyFi. We wanted to ensure that technical decisions we made in designing the package didn't hamstring future work of further integration.
+To ensure the development of a user-centered and effective code package for detecting harmful algal blooms, we conducted human-centered design intervies with subject matter experts and end users. We conducted interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
 
-We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
-
-@tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
+@tbl:interview_takeaways summarizes the core design decsisions for CyFi that were rooted in insights from these interviews.
 
 ### Model experimentation
 
-In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. The table below summarizes the matrix of experiments that were conducted. The goal was to produce a more robust, accurate, and generalizable model. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
+In carrying forward the winning approaches into a robust, accurate, and generalizable solution, additional model testing and experimentation and tested was needed. The table below summarizes the matrix of experiments that were conducted. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
 
-:::{figure} experiments.png
-:label: fig:experiments
-Model experimentation building blocks
-:::
+```{list-table} Model experimentation summary
+:label: tbl:experiments
+:header-rows: 1
+* - Data
+  - Satellite processing
+  - Target variable
+* - Sentinel-2
+  - Bounding box size
+  - Severity category
+* - Landsat
+  - Water filtering
+  - Density
+* - Climate (HRRR)
+  - Cloud filtering
+  - Log density
+* - Elevation (DEM)
+  - Lookback window
+  -
+* - Land cover
+  - Number of images per sampling point
+  - 
+```
 
-During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, regional root mean squared error, and visualizations of predictions.
+TODO: add details for which features / sizes / etc.
+
+During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
 
 # Results
 
