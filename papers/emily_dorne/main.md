@@ -19,7 +19,7 @@ Inland water bodies provide a variety of critical services for both human and aq
 
 While there are established methods for using satellite imagery to detect cyanobacteria in larger water bodies like oceans, detection in small inland lakes and reservoirs remains a challenge. Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
-CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing high-resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and straightfoward command line interface.
+CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and straightfoward command line interface.
 
 The first section of this paper will give an overview of the origins of CyFi along with the underlying methods. The second portion will focus on CyFi's primary capabilities, intended uses, and areas for future work.
 
@@ -37,10 +37,9 @@ The ecological impacts of HABs are equally devastating. They can create hypoxic 
 
 Economically, HABs can cripple local industries reliant on water resources, such as fisheries, tourism, and recreation. Beaches and lakeside areas affected by algal blooms often face closures, leading to a loss of revenue from tourism and recreational activities. The cost of managing and mitigating the effects of HABs, including water treatment and healthcare expenses, places additional financial burdens on affected communities.
 
-Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality. Satellite-based monitoring tools like Sentinel-3 offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. Moreover, these tools may not provide the timely data needed for effective early warning and rapid response to HAB outbreaks.
+Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality. Existing satellite-based monitoring tools offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. One of the leading satellite-based tools for cyanobacteria detection is the [CyAN index](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks.
 
-The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that can provide real-time, high-resolution data on the presence and extent of harmful algal blooms.
-
+The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
 
 # CyFi overview
 
@@ -82,9 +81,9 @@ Train/test split criteria
 ### Feature processing
 
 Each observation (or "sampling point") is a unique combination of date, latitude, and longitude. Satellite imagery feature generation for each observation is as follows:
-  1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date
+  1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
   2. Select the most recent image that has a bounding box containing fewer than 5% of cloud pixels. If none of the images meet this criteria, no prediciton is made for that sampling point.
-  3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band
+  3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band.
   4. Generate summary statistics (e.g., mean, max, min) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands. Features include the mean, minimum, maximum, and range for 15 different bands, both visible and non-visible (AOT, B01, B02, B03, B04, B05, B06, B07, B08, B09, B11, B12, B8A, SCL, WVP), as well as normalized difference vegetation index calculations generated by combining the NIR band separately with the red band (B4) and three vegetation red bands (B5, B6, B7).
   
 :::{figure} feature_creation.png
