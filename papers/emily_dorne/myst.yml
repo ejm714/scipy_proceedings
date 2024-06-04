@@ -8,17 +8,18 @@ project:
   authors:
     - name: Emily Dorne
       email: emily@drivendata.org
-      orcid: 0000-0000-0000-0000
       affiliations:
         - DrivenData
   keywords:
-    - terraforming
-    - desert
-    - numerical perspective
+    - cyanobacteria
+    - Sentinel-2
+    - machine learning
+    - harmful algal blooms
+    - remote sensing
   # Add the abbreviations that you use in your paper here
   abbreviations:
     CyFi: Cyanobacteria Finder
-    HAB: Harmful Algal Bloom
+    HAB: harmful algal bloom
   # It is possible to explicitly ignore the `doi-exists` check for certain citation keys
   error_rules:
     - rule: doi-exists
