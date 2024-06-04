@@ -228,8 +228,9 @@ Model experimentation building blocks
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
 
+# Conclusion
 
-
+Hope CyFi is illustrative in showcasing the utility of machine learning competitions as a first step toward open source tools. Also that machine learning can be useful for cyanobacteria detection and plugging into human workflows.
 
 
 
