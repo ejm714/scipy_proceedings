@@ -79,11 +79,6 @@ Density estimates along with severity level based on WHO buckets.
 
 ## Comparison to CyAN
 
-## Model experimentation
-
-The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
-
-In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. One of the risks in a machine learning competition is overfitting to the test set or picking up on patterns specific to the competition data that don't hold outside of the competition.
 
 #### Carrying foward competition results
 
@@ -101,7 +96,9 @@ In carrying forward winning models, we aimed to assess performance & efficiency 
 
 CyFi is not intended to be the end of the story. More work is needed to integrate CyFi in state-level dashboards and make it an integral part of decision-making workflow. That said, we conducted a number of user interviews that can inform the technical development of CyFi. We wanted to ensure that technical decisions we made in designing the package didn't hamstring future work of further integration.
 
-We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of problem severity, investment in HABs, and technical sophistication of current approaches. @tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
+We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
+
+@tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
 
 ```{list-table} CyFi design decisions rooted in HCD interviews
 :label: tbl:interview_takeaways
@@ -119,7 +116,6 @@ We conducted human-centered design interviews with representatives from Californ
 * - States have their own tools for managing water quality data (e.g. ground samples and lab results).
   - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
 ```
-
 
 ## Use cases
 
@@ -141,6 +137,47 @@ Identifying water bodies that are not impaired can be just as helpful as identif
 
 On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
 
+
+## Model experimentation
+
+The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
+
+In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. One of the risks in a machine learning competition is overfitting to the test set or picking up on patterns specific to the competition data that don't hold outside of the competition.
+
+The table below summarizes the matrix of experiments that were conducted. The goal was to produce a more robust, accurate, and generalizable model. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
+
+:::{figure} experiments.png
+:label: fig:experiments
+Model experimentation building blocks
+:::
+
+### Data decisions
+
+**Sentinel-2 as sole satellite source**: We found that Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. We chose to use Sentinel-2 as the sole data source as downloading satellite data is the slowest part of the prediction process and we expect CyFi primarily to be used in a forward looking way.
+
+**Exclude climate and elevation features**: Similarly, we found that climate and elevation features primarily provided value for data points prior to the launch of Sentinel-2 and so are not used in the final CyFi model. We recognize that climate and elevation likely do have an impact on how cyanobacteria blooms form, and more sophisticated feature engineering with these data sources may add value in the future. This is a direction for future research.
+
+**Include land cover**: Lastly, we found that including a land cover map, even at a coarse 300m resolution, added to model accuracy. The land cover map is likely capturing farmland areas that are more likely to have fertilizer runoff that contributes to blooms. We choose a static map from 2020 rather than a real-time satellite-derived product as this reduces the compute time and patterns in land use do not fluctuate daily.
+
+### Satellite processing decisions
+
+**Filter to water area and use a larger bounding box**: Land pixels will generate falsely high cyanobacteria estimates so we filter them out. We find that the scene classification band (while not perfect) is sufficient for masking non-water pixels. Since ground sampling points are often near land (taken from the shore or the dock), a larger bounding box (2,000m) is used to ensure the relevant water pixels are included.
+
+**Use a larger look-back window and filter to images with almost no clouds**: We use the scene classification band to calculate the percent of clouds in the bounding box and do not use any imagery that has greater than 5% clouds. Given the strict cloud threshold, we use a look-back window of 30 days before the sample. This increases the chances of getting a cloud-free image.
+
+**Use only one image per sample point**: Some winning solutions average predictions over multiple images within a specified range. We find that this favors static blooms. We use only the most-recent cloud-free image to better detect short-lived blooms.
+
+### Target variable decisions
+
+**Estimate density instead of severity**: We learned in the user interviews that states use different thresholds for action, so predicting density instead of severity categories supports a broader range of use cases. The winning competition models were trained to predict severity, so the first experiment we ran was predicting on density to see if there was enough signal in the feature data to suppor this.
+
+**Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
+
+#### Improving generalizability when carrying competition models forward
+
+Generalizability is the degree to which the model applies well to new data in new time ranges and new locations. We care about generalizability because it’s not possible (or reasonable) to train the model on a sample form every lake in the U.S. We therefore need the model to learn useful patterns that apply to new locations.
+
+In the model experimentation phase, we sought to identify and remove competition artifacts that would hamper the generalizability of the model in a open source package. We found that all winning solutions used a "longitude" feature in their solutions, which captured some underlying differences in sampling procedures by data providers. For example, California only conducts toxin analysis (which produces cyanobacteria cell density measures) for suspected blooms, so for the California sampling points in the competition data, most had high severity. With longitude as a feature, the model predicts high values for California data which does well in the competition setting (where most California points are high severity) but doesn't generalize to the real world, where most lakes in California are not experiencing high severity blooms at any given time. There are no geographic features used in the CyFi model.
 
 
 ### Origin story
