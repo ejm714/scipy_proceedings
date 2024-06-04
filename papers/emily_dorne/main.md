@@ -41,7 +41,82 @@ Despite the severe consequences of HABs, existing monitoring tools and methods a
 
 The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
 
-# CyFi overview
+# Methods
+
+## Machine learning competition
+
+CyFi has its origins in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. This machine learning competition sought to harness the power of community-driven innovation and was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
+
+The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels were manually collected ground samples that were analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets.
+
+:::{figure} ttb_datasets.png
+:label: fig:ttb_datasets
+Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
+:::
+
+The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
+
+Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines (TODO: link).
+
+```{list-table} Severity categories used in the Tick Tick Bloom competition
+:label: tbl:severity_categories
+:header-rows: 1
+* - Severity level
+  - Cyanobacteria density range (cells/mL)
+* - 1
+  - $\lt$20,000
+* - 2
+  - 20,000 – $\lt$100,000
+* - 3
+  - 100,000 – $\lt$1,000,000
+* - 4
+  - 1,000,000 – $\lt$10,000,000
+* - 5
+  - $\ge$10,000,000
+```
+
+One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
+
+:::{figure} ttb_winner_sources.png
+:label: fig:ttb_winner_sources
+Data sources used by Tick Tick Bloom competition winners
+:::
+
+
+TODO: competition results
+
+## Carrying foward competition models
+
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. The outputs of machine learning competitions include winning model code, trained model, and write ups. The desired outcome is regular predictions of cyanobacteria levels for given latitude and longitude points within small water bodies across the US. This enables ongoing detection of unsafe bacteria counts to inform advisories and protect public health and safety. There remains a “missing middle” of implementation that bridges the gap between static research code and the ability to use regularly generated predictions from the model. CyFi aims to bridge that gap.
+
+// The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
+
+This gap exists for a few reasons. First, competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data. Second, winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters. Third, competition code is validated once with anticipated, clean data. In the real world things break and change; use requires basic robustness, testing and configurability. Lastly, there is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
+
+In carrying forward winning models, we aimed to assess performance & efficiency opportunities, simplify & restructure code to transform it into a runnable pipeline, and engineer clean, reproducible repository, access points for processing new data, tests, & continuous integration. The output (CyFi) is a clean, configurable code package capable of generating predictions on new input data.
+
+### User interviews
+
+CyFi is not intended to be the end of the story. More work is needed to integrate CyFi in state-level dashboards and make it an integral part of decision-making workflow. That said, we conducted a number of user interviews that can inform the technical development of CyFi. We wanted to ensure that technical decisions we made in designing the package didn't hamstring future work of further integration.
+
+We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
+
+@tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
+
+### Model experimentation
+
+In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. The table below summarizes the matrix of experiments that were conducted. The goal was to produce a more robust, accurate, and generalizable model. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
+
+:::{figure} experiments.png
+:label: fig:experiments
+Model experimentation building blocks
+:::
+
+During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, regional root mean squared error, and visualizations of predictions.
+
+# Results
+
+## CyFi overview
 
 For each sampling point – a unique combination of date, latitude, and longitude – CyFi downloads recent cloud-free Sentinel-2 data from Microsoft's Planetary Computer, calculates a set of summary statistics for a bounding box around the sampling point, and passes that feature row into a LightGBM model which produces an estimated cyanobacteria density.
 
@@ -139,64 +214,13 @@ On the contrary, places likely to contain severe concentrations of cyanobacteria
 
 # Origins
 
-## Machine learning competition
 
-CyFi has its origins in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. This machine learning competition sought to harness the power of community-driven innovation and was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels were manually collected ground samples that were analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets.
 
-:::{figure} ttb_datasets.png
-:label: fig:ttb_datasets
-Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
-:::
 
-The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
+# Discussion
 
-Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines (TODO: link).
-
-```{list-table} Severity categories used in the Tick Tick Bloom competition
-:label: tbl:severity_categories
-:header-rows: 1
-* - Severity level
-  - Cyanobacteria density range (cells/mL)
-* - 1
-  - $\lt$20,000
-* - 2
-  - 20,000 – $\lt$100,000
-* - 3
-  - 100,000 – $\lt$1,000,000
-* - 4
-  - 1,000,000 – $\lt$10,000,000
-* - 5
-  - $\ge$10,000,000
-```
-
-One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
-
-:::{figure} ttb_winner_sources.png
-:label: fig:ttb_winner_sources
-Data sources used by Tick Tick Bloom competition winners
-:::
-
-TODO: competition results
-
-## Carrying foward competition models
-
-Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. The outputs of machine learning competitions include winning model code, trained model, and write ups. The desired outcome is regular predictions of cyanobacteria levels for given latitude and longitude points within small water bodies across the US. This enables ongoing detection of unsafe bacteria counts to inform advisories and protect public health and safety. There remains a “missing middle” of implementation that bridges the gap between static research code and the ability to use regularly generated predictions from the model. CyFi aims to bridge that gap.
-
-// The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
-
-This gap exists for a few reasons. First, competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data. Second, winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters. Third, competition code is validated once with anticipated, clean data. In the real world things break and change; use requires basic robustness, testing and configurability. Lastly, there is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
-
-In carrying forward winning models, we aimed to assess performance & efficiency opportunities, simplify & restructure code to transform it into a runnable pipeline, and engineer clean, reproducible repository, access points for processing new data, tests, & continuous integration. The output (CyFi) is a clean, configurable code package capable of generating predictions on new input data
-
-### User interviews
-
-CyFi is not intended to be the end of the story. More work is needed to integrate CyFi in state-level dashboards and make it an integral part of decision-making workflow. That said, we conducted a number of user interviews that can inform the technical development of CyFi. We wanted to ensure that technical decisions we made in designing the package didn't hamstring future work of further integration.
-
-We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
-
-@tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
+## User interviews
 
 ```{list-table} CyFi design decisions rooted in HCD interviews
 :label: tbl:interview_takeaways
@@ -215,18 +239,11 @@ We conducted human-centered design interviews with representatives from Californ
   - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
 ```
 
-### Model experimentation
+## Model experimentation
 
-In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. The table below summarizes the matrix of experiments that were conducted. The goal was to produce a more robust, accurate, and generalizable model. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
+Below are the core decisions that resulted from the model experimentation and retraining based on competition-winning approaches.
 
-:::{figure} experiments.png
-:label: fig:experiments
-Model experimentation building blocks
-:::
-
-During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, regional root mean squared error, and visualizations of predictions.
-
-#### Data decisions
+### Data decisions
 
 **Sentinel-2 as sole satellite source**: We found that Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. We chose to use Sentinel-2 as the sole data source as downloading satellite data is the slowest part of the prediction process and we expect CyFi primarily to be used in a forward looking way. Chosing to rely only on Sentinel-2 data meant that we removed any samples prior to the launch of Sentinel-2 from the training and evaluation sets. This decreased the dataset size by XX.
 
@@ -238,7 +255,7 @@ During experimentation, the model was trained on roughly 13,000 samples and eval
 
 **Remove likely mislabeled data points**: Training data is limited to samples that are estimated to be near a water body. There are known to be some samples with a location that appears to be far from a water body in the hand-labeled ground truth data. This can be caused by human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. During data pre-processing, the distance between each sample and the nearest water body was calculated using the [European Space Agency (ESA) WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. Samples farther than 550m from a water body are excluded. This helps ensure that the relevant water body falls within the bounding box so the model learns from examples that reflect real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error.
 
-#### Satellite processing decisions
+### Satellite processing decisions
 
 **Filter to water area and use a larger bounding box**: Land pixels will generate falsely high cyanobacteria estimates so we filter them out. We find that the scene classification band (while not perfect) is sufficient for masking non-water pixels. Since ground sampling points are often near land (taken from the shore or the dock), a larger bounding box (2,000m) is used to ensure the relevant water pixels are included.
 
@@ -246,13 +263,14 @@ During experimentation, the model was trained on roughly 13,000 samples and eval
 
 **Use only one image per sample point**: Some winning solutions average predictions over multiple images within a specified range. We find that this favors static blooms. We use only the most-recent cloud-free image to better detect short-lived blooms.
 
-#### Target variable decisions
+### Target variable decisions
 
 **Estimate density instead of severity**: We learned in the user interviews that states use different thresholds for action, so predicting density instead of severity categories supports a broader range of use cases. The winning competition models were trained to predict severity, so the first experiment we ran was predicting on density to see if there was enough signal in the feature data to suppor this.
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
 
-# Future directions
+## Future directions
+
 
 # Conclusion
 
