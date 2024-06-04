@@ -23,7 +23,6 @@ CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses
 
 The first section of this paper will give an overview of the origins of CyFi along with the underlying methods. The second portion will focus on CyFi's primary capabilities, intended uses, and areas for future work.
 
-
 ## Motivation
 
 > There are tens of thousands of lakes that matter for recreation and drinking water. Cyanobacterial blooms pose real risks in many of them, and we really don't know when or where they show up, except in the largest lakes.
@@ -77,13 +76,6 @@ Density estimates along with severity level based on WHO buckets.
 ## CyFi explorer
 
 
-## Use cases
-
-Low severity
-
-High severity
-
-User interview pieces
 
 ## Comparison to CyAN
 
@@ -129,7 +121,25 @@ We conducted human-centered design interviews with representatives from Californ
 ```
 
 
+## Use cases
 
+The general use cases for CyFi are as follows.
+
+1) Provide a birds-eye view of conditions in lakes across the state
+
+Some states rely on public reporting of blooms. CyFi can quickly and easily estimate cyanobacteria levels in water bodies across the state. This is particuarly important for regulatory and impairment work.
+
+2) Confirm publicly reported blooms with more data
+
+Some states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can estimate the cyanobacteria levels and provide an additional data point, allowing the individual to make a more informed decision.
+
+3) Identify places where sampling is not needed
+
+Identifying water bodies that are not impaired can be just as helpful as identifying water bodies that are. CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
+
+4) Identify areas needing public health intervention
+
+On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
 
 
 
