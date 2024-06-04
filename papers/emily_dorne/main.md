@@ -55,13 +55,81 @@ Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission. It 
 The Climate Research Data Package (CRDP) Land Cover Gridded Map (2020) classifies land surface into 22 classes, which have been defined using the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS). This map is based on data from the Medium Resolution Imaging Spectrometer (MERIS) sensor on board the polar-orbiting Envisat-1 environmental research satellite by the European Space Agency. This data comes from the CCI-LC database hosted by the ESA Climate Change Initiative's Land Cover project ([source](https://www.esa-landcover-cci.org/?q=node/164)).
 
 
+### Training data
+
+X observation for training, Y for testing
+Train/test split criteria
+
 ### Feature processing
+
+Each observation (or "sampling point") is a unique combination of date, latitude, and longitude. Satellite imagery feature generation for each observation is as follows: identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date. Then, select the most recent image that has a bounding box containing fewer than 5% of cloud pixels and filter the pixels in the bounding box to the water area using the scene classification (SCL) band. Finally, generate summary statistics (e.g., mean, max, min) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands. The land cover value for each sampling point is looked up from the static land cover map, and added to the satellite features.
 
 
 ### Model
 
+LightGMB
+
 
 ### Predictions
+
+Density estimates along with severity level based on WHO buckets.
+
+## CyFi explorer
+
+
+## Use cases
+
+Low severity
+
+High severity
+
+User interview pieces
+
+## Comparison to CyAN
+
+## Model experimentation
+
+The goal of CyFi is to carry forward winning solutions from machine learning competitions. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. Where the primary goal is exploration, competitions are not set up to also productionize that code. Rather, winning submissions are closer to reserach code, surfacing novel approaches rather than robust, reusable code.
+
+In carrying forward the winning approaches into a robust, generalizable, testing open source python package, additional model testing and experimentation and tested was needed to create a mmore generalizable solution. One of the risks in a machine learning competition is overfitting to the test set or picking up on patterns specific to the competition data that don't hold outside of the competition.
+
+#### Carrying foward competition results
+
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. The outputs of machine learning competitions include winning model code, trained model, and write ups. The desired outcome is regular predictions of cyanobacteria levels for given latitude and longitude points within small water bodies across the US. This enables ongoing detection of unsafe bacteria counts to inform advisories and protect public health and safety. There remains a “missing middle” of implementation that bridges the gap between static research code and the ability to use regularly generated predictions from the model. CyFi aims to bridge that gap.
+
+This gap exists because:
+* Competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data.
+* Winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters.
+* Competition code is validated once with anticipated, clean data. In the real world things break and change; use requires basic robustness, testing and configurability.
+* There is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
+
+In carrying forward winning models, we aimed to assess performance & efficiency opportunities, simplify & restructure code to transform it into a runnable pipeline, and engineer clean, reproducible repository, access points for processing new data, tests, & continuous integration. The output (CyFi) is a clean, configurable code package capable of generating predictions on new input data
+
+### User interviews
+
+CyFi is not intended to be the end of the story. More work is needed to integrate CyFi in state-level dashboards and make it an integral part of decision-making workflow. That said, we conducted a number of user interviews that can inform the technical development of CyFi. We wanted to ensure that technical decisions we made in designing the package didn't hamstring future work of further integration.
+
+We conducted human-centered design interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of problem severity, investment in HABs, and technical sophistication of current approaches. @tbl:interview_takeaways shows the core design decsisions for CyFi that were rooted in these interviews:
+
+```{list-table} CyFi design decisions rooted in HCD interviews
+:label: tbl:interview_takeaways
+:header-rows: 1
+* - Interview insight
+  - CyFi design decision
+* - States tend to have designated sampling locations or locations of reported blooms. Continuous coverage of a lake is nice but not necessary.
+  - CyFi will expect sampling points as input rather than polygons and the output will be point-estimates rather than a gridded heatmap.
+* - Thresholds are not universal and actions vary by state.
+  - Prediction will be a density value rather than severity category.
+* - While blooms in small water bodies can change quickly, the maximum cyanobacteria estimation cadence is daily
+  - A sampling point will be a unique combination of date, latitude, and longitude. Additional time granularity is not needed. The CyFi model should be able to produce estimates for thousands of points in a day on a normal laptop.
+* - Many states include a visual review of imagery (satellite or submitted photo) as part of the decision-making process.
+  - Including a way to see the underlying satellite data for a given prediction point will help users build confidence and intution around the CyFi model.
+* - States have their own tools for managing water quality data (e.g. ground samples and lab results).
+  - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
+```
+
+
+
 
 
 
