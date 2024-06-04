@@ -19,15 +19,28 @@ Inland water bodies provide a variety of critical services for both human and aq
 
 While there are established methods for using satellite imagery to detect cyanobacteria in larger water bodies like oceans, detection in small inland lakes and reservoirs remains a challenge. Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
-CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily.
+CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing high-resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and straightfoward command line interface.
 
 The first section of this paper will give an overview of the origins of CyFi along with the underlying methods. The second portion will focus on CyFi's primary capabilities, intended uses, and areas for future work.
+
+// This paper presents a detailed examination of the development of CyFi, exploring the algorithm's evolution, the dynamics of the prize competition that shaped it, and the broader implications of such competitions for scientific advancements. 
 
 # Motivation
 
 > There are tens of thousands of lakes that matter for recreation and drinking water. Cyanobacterial blooms pose real risks in many of them, and we really don't know when or where they show up, except in the largest lakes.
 >
 > -- Dr. Rick Stumpf, Oceanographer, NOAA, National Centers for Coastal Ocean Science
+
+Harmful algal blooms are a pressing environmental and public health issue, characterized by the rapid and excessive growth of algae in water bodies, predominantly involving cyanobacteria, also known as blue-green algae. These blooms can produce toxins, such as microcystins and anatoxins, that pose severe risks to human health, aquatic ecosystems, and local economies. The toxins released by HABs can contaminate drinking water supplies, leading to acute and chronic health problems for communities. Exposure to these toxins through ingestion, skin contact, or inhalation can result in various health issues, including gastrointestinal illnesses, liver damage, neurological effects, and even death in extreme cases.
+
+The ecological impacts of HABs are equally devastating. They can create hypoxic (low oxygen) conditions in water bodies, resulting in massive fish kills and the disruption of aquatic food webs. The dense algal mats can block sunlight from penetrating the water, inhibiting the growth of submerged vegetation essential for aquatic habitats. Furthermore, the decomposition of large algal blooms consumes significant amounts of dissolved oxygen, exacerbating the oxygen depletion and leading to dead zones where most aquatic life cannot survive.
+
+Economically, HABs can cripple local industries reliant on water resources, such as fisheries, tourism, and recreation. Beaches and lakeside areas affected by algal blooms often face closures, leading to a loss of revenue from tourism and recreational activities. The cost of managing and mitigating the effects of HABs, including water treatment and healthcare expenses, places additional financial burdens on affected communities.
+
+Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality. Satellite-based monitoring tools like Sentinel-3 offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. Moreover, these tools may not provide the timely data needed for effective early warning and rapid response to HAB outbreaks.
+
+The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that can provide real-time, high-resolution data on the presence and extent of harmful algal blooms.
+
 
 # CyFi overview
 
@@ -59,8 +72,12 @@ The Climate Research Data Package (CRDP) Land Cover Gridded Map (2020) classifie
 
 ### Training data
 
+The machine learning model underpinning CyFi was trained and evaluated using a comprehensive dataset of in-situ measurements of cyanobacteria density from across the United States, including 8,979 observations for training and 4,035 for testing and evaluation.
+
 X observation for training, Y for testing
 Train/test split criteria
+
+
 
 ### Feature processing
 
@@ -68,7 +85,7 @@ Each observation (or "sampling point") is a unique combination of date, latitude
   1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date
   2. Select the most recent image that has a bounding box containing fewer than 5% of cloud pixels. If none of the images meet this criteria, no prediciton is made for that sampling point.
   3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band
-  4. Generate summary statistics (e.g., mean, max, min) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands
+  4. Generate summary statistics (e.g., mean, max, min) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands. Features include the mean, minimum, maximum, and range for 15 different bands, both visible and non-visible (AOT, B01, B02, B03, B04, B05, B06, B07, B08, B09, B11, B12, B8A, SCL, WVP), as well as normalized difference vegetation index calculations generated by combining the NIR band separately with the red band (B4) and three vegetation red bands (B5, B6, B7).
   
 :::{figure} feature_creation.png
 :label: fig:feature_creation
@@ -77,6 +94,8 @@ Mock up of satellite data selection and processing. The dot represents the sampl
 :::
 
 Finally, the land cover value for each sampling point is looked up from the static land cover map, and added to the satellite features.
+
+
 
 
 ### Model
@@ -123,14 +142,16 @@ On the contrary, places likely to contain severe concentrations of cyanobacteria
 
 ## Machine learning competition
 
-CyFi has its origins in a machine learning competition. Machine learning competitions are excellent for crowd-sourcing top approaches to complex problems. In coordination with NASA, DrivenData ran the [Tick Tick Bloom machine learning competition](https://www.drivendata.org/competitions/143/tick-tick-bloom/) from December 2022 to February 2023. The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data.
+CyFi has its origins in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. This machine learning competition sought to harness the power of community-driven innovation and was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-The labels in the competition were manually collected ground samples that were analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets.
+The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels were manually collected ground samples that were analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets.
 
 :::{figure} ttb_datasets.png
 :label: fig:ttb_datasets
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
+
+The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
 
 Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines (TODO: link).
 
@@ -204,15 +225,19 @@ In carrying forward the winning approaches into a robust, generalizable, testing
 Model experimentation building blocks
 :::
 
+During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, regional root mean squared error, and visualizations of predictions.
+
 #### Data decisions
 
-**Sentinel-2 as sole satellite source**: We found that Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. We chose to use Sentinel-2 as the sole data source as downloading satellite data is the slowest part of the prediction process and we expect CyFi primarily to be used in a forward looking way.
+**Sentinel-2 as sole satellite source**: We found that Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. We chose to use Sentinel-2 as the sole data source as downloading satellite data is the slowest part of the prediction process and we expect CyFi primarily to be used in a forward looking way. Chosing to rely only on Sentinel-2 data meant that we removed any samples prior to the launch of Sentinel-2 from the training and evaluation sets. This decreased the dataset size by XX.
 
 **Exclude climate and elevation features**: Similarly, we found that climate and elevation features primarily provided value for data points prior to the launch of Sentinel-2 and so are not used in the final CyFi model. We recognize that climate and elevation likely do have an impact on how cyanobacteria blooms form, and more sophisticated feature engineering with these data sources may add value in the future. This is a direction for future research.
 
 **Include land cover**: Lastly, we found that including a land cover map, even at a coarse 300m resolution, added to model accuracy. The land cover map is likely capturing farmland areas that are more likely to have fertilizer runoff that contributes to blooms. We choose a static map from 2020 rather than a real-time satellite-derived product as this reduces the compute time and patterns in land use do not fluctuate daily.
 
 **Remove geographic features to improve generalizability**: Generalizability is the degree to which the model applies well to new data in new time ranges and new locations. One of the risks in a machine learning competition is overfitting to the test set or picking up on patterns specific to the competition data that don't hold outside of the competition. We sought to identify and remove competition artifacts that would hamper the generalizability of the model in a open source package. We found that all winning solutions used a "longitude" feature in their solutions, which captured some underlying differences in sampling procedures by data providers. For example, California only conducts toxin analysis (which produces cyanobacteria cell density measures) for suspected blooms, so for the California sampling points in the competition data, most had high severity. With longitude as a feature, the model predicts high values for California data which does well in the competition setting (where most California points are high severity) but doesn't generalize to the real world, where most lakes in California are not experiencing high severity blooms at any given time. There are no geographic features used in the CyFi model.
+
+**Remove likely mislabeled data points**: Training data is limited to samples that are estimated to be near a water body. There are known to be some samples with a location that appears to be far from a water body in the hand-labeled ground truth data. This can be caused by human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. During data pre-processing, the distance between each sample and the nearest water body was calculated using the [European Space Agency (ESA) WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. Samples farther than 550m from a water body are excluded. This helps ensure that the relevant water body falls within the bounding box so the model learns from examples that reflect real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error.
 
 #### Satellite processing decisions
 
@@ -226,12 +251,15 @@ Model experimentation building blocks
 
 **Estimate density instead of severity**: We learned in the user interviews that states use different thresholds for action, so predicting density instead of severity categories supports a broader range of use cases. The winning competition models were trained to predict severity, so the first experiment we ran was predicting on density to see if there was enough signal in the feature data to suppor this.
 
-**Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
+**Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
+
+# Future directions
 
 # Conclusion
 
 Hope CyFi is illustrative in showcasing the utility of machine learning competitions as a first step toward open source tools. Also that machine learning can be useful for cyanobacteria detection and plugging into human workflows.
 
+Through a review of relevant literature and a discussion of the challenges faced in creating this independent, collaborative code package, this study aims to illustrate the potential of prize competitions and open-source tools in addressing critical environmental issues.
 
 
 --------------------------
