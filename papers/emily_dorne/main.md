@@ -39,7 +39,7 @@ Harmful algal blooms are a pressing environmental and public health issue, chara
 
 Ecologically, HABS can create hypoxic (low oxygen) conditions in water bodies, resulting in massive fish kills and the disruption of aquatic food webs. HABs can form dense algal mats that block sunlight, inhibiting the growth of submerged vegetation essential for aquatic habitats. Furthermore, the decomposition of large algal blooms consumes significant amounts of dissolved oxygen, exacerbating oxygen depletion and leading to dead zones where most aquatic life cannot survive.
 
-These ecological impacts can have devastating economic consequences for local industries reliant on water resources, such as fisheries, tourism, and recreation. Beaches and lakeside areas affected by algal blooms often face closures, leading to a loss of revenue. The cost of managing and mitigating the effects of HABs, including water treatment and healthcare expenses, places additional financial burdens on affected communities.
+**These ecological impacts can have devastating economic consequences for local industries reliant on water resources, such as fisheries, tourism, and recreation.** Beaches and lakeside areas affected by algal blooms often face closures, leading to a loss of revenue. The cost of managing and mitigating the effects of HABs, including water treatment and healthcare expenses, places additional financial burdens on affected communities.
 
 Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
 
@@ -57,24 +57,26 @@ An example of a water body at 10m resolution
 An example of the @fig:10m image at 30m resolution
 :::
 
-The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
+- [ ] TODO: I would combine these into one figure with the two images next to one another.
+
+Effectively monitoring inland HABs and protecting public health requires developing new innovative tools that capture a higher spatial resolution, can be run quickly and frequently, and are accessible to decision makers. CyFi aims to fill this gap by incorporating higher-resolution satellite imagery, an efficient tree-based model, and a user-friendly command line interface.
 
 # Methods
 
 ## Machine learning competition
 
-CyFi has its origins in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. This machine learning competition sought to harness the power of community-driven innovation and was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
+The machine learning models in CyFi were originally developed in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. Machine learning competition can harness the power of community-driven innovation and rapidly test a wide variety of possible data sources, model architectures, and features. Tick Tick Bloom was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels against which predictions were evaluated were manually collected ground samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
+In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/879/).
 
 :::{figure} ttb_datasets.png
 :label: fig:ttb_datasets
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
 
-Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines.
+Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by WHO guidelines (https://www.epa.gov/sites/default/files/2019-09/documents/recommend-cyano-rec-water-2019-update.pdf, page 5).
 
-- [ ] TODO: add link to EPA guidelines
+- [ ] TODO: format citation link to EPA guidelines
 
 ```{list-table} Severity categories used in the Tick Tick Bloom competition
 :label: tbl:severity_categories
@@ -93,21 +95,23 @@ Participants predicted a severity category for a given sampling point as shown i
   - $\ge$10,000,000
 ```
 
-Much care was taken to create a train test split that would not leak information as lakes in close proximity can experience similar bloom-forming conditions.
+The competition dataset was split into train and set sets. Train data labels are provided to participants for model training. Test labels are used to evaluate model performance, and are kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage.
 
-- [ ] TODO: add sentence on what final train/test strategy was
+Clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. Using [sklearn's DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html), all data points were divided into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
 
 Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
 ## Carrying foward competition models
 
-Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Machine learning competitions are great for exploring a large feature space, identifying which datasets are most useful, getting a sense of how well models can perform on a given task, and understanding why types of models/methodologies are most successful at this task. However, the outputs of a machine learning competition are typically closer to reserach code than production code. There remains an understandable gap between the outputs of a competition (e.g. winning model code, trained model, and write ups) and the ability to use regularly generated predictions from the model.
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is a [repository of research code](https://github.com/drivendataorg/tick-tick-bloom) surfacing the most effective methods for a given task, including trained model weights and write-ups of winning methods.
 
-This gap exists for a few reasons. First, competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data. Second, winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters. Third, competition code is validated once with anticipated, clean data. In the real world things break and change; use requires basic robustness, testing and configurability. Lastly, there is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
+However, transforming this research code into production code requires significant additional work. A gap between competition results and code that can be deployed exists for a few reasons:
+1. Competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data.
+2. Winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters.
+3. Competition code is validated once with anticipated, clean data and static versions of Python package dependencies. In the real world things break and change; use requires basic robustness, testing and configurability.
+4. There is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
 
-The next step toward regularly generated predictions of cyanobacteria levels that can be used to inform advisories and protect public health and safety is a deployment-ready code package. In developing this, we assessed model performance and efficiency opportunities, combined and iterated the most useful pieces of the winning approaches into a single model, and simplified and restructured code to transform it into a runnable pipeline. We engineered a clean, reproducible repository with access points for processing new data along with tests and continuous integration.
-
-The result is CyFi, a configurable code package capable of generating cyanobacteria predictions on new input data, ready to be integrated into state-level dashboards and embedded into decision-making processes.
+An open-source Python package brings together these improvements to enable regularly generated predictions of cyanobacteria levels. To develop a package, we assessed model performance and efficiency opportunities, combined and iterated the most useful pieces of the winning approaches into a single model, and simplified and restructured code to transform it into a runnable pipeline. The result is CyFi, a configurable code package capable of generating cyanobacteria predictions on new input data. CyFi is a clearn, reproducible repository that incorporates open source best practices, including tests and continuous integration. CyFi is fully ready for integration into state-level dashboard and decision-making processes.
 
 ### User interviews
 
