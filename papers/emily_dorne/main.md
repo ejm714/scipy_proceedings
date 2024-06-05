@@ -304,7 +304,7 @@ TODO: add WHO ranges
   </table>
 :::
 
-CyFi also comes with a visualization tool called [CyFi Explorer](https://cyfi.drivendata.org/explorer/). CyFi Explorer surfaces the corresponding Sentinel-2 imagery for each cyanobacteria estimate. The explorer runs locally on the user's machine and is intended to enable exploration of where the model is performing well as well as edge cases or failure modes. It is not intended to replace more robust data analytics tools and decision-making workflows.
+CyFi also comes with a visualization tool called [CyFi Explorer](https://cyfi.drivendata.org/explorer/). CyFi Explorer surfaces the corresponding Sentinel-2 imagery for each cyanobacteria estimate. The explorer runs a Gradio app locally on the user's machine and is intended to enable visual inspection of where the model is performing well as well as edge cases or failure modes. It is not intended to replace more robust data analytics tools and decision-making workflows.
 
 :::{figure} cyfi_explorer.jpg
 :label: fig:cyfi_explorer
@@ -390,8 +390,15 @@ Below are the core decisions that resulted from the model experimentation and re
 
 ## Future directions
 
+CyFi is least reliable in very narrow or small waterways, where there are clouds in the bounding box, or where there are multiple water bodies in the image. Recommended next steps for model improvements include: retraining with additional ground measurements for true negative cases, adding water body segmentation to exclude pixels from non-contiguous water bodies, and adding cloud segmentation to remove cloud pixels from being included in feature calculations. Additionally, incorporating more sophisticated time-series climate featuers may enhance model accuracy. To support users who desire comprehensive estimates across the entire lake, a pre-processing step can be added that accepts a polygon and produces a grid of sample points.
+
 
 # Conclusion
+
+CyFi is a powerful tool for identifying high and low levels of cyanobacteria.
+
+Areas with low density cyanobacteria counts can be excluded from ground sampling to better priorize limited resources. Areas with high density cyanobacteria counts should either be prioritized for sampling to get a precise toxin range, or can
+
 
 Hope CyFi is illustrative in showcasing the utility of machine learning competitions as a first step toward open source tools. Also that machine learning can be useful for cyanobacteria detection and plugging into human workflows.
 
