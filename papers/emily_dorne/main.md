@@ -1,6 +1,7 @@
 ---
 # Ensure that this title is the same as the one in `myst.yml`
 title: Using Satellite Imagery to Identify Harmful Algal Blooms and Protect Public Health
+---
 abstract: |
   A short version of the long version that is way too long to be written as a
   short version anyway.  Still, when considering the facts from first
@@ -11,7 +12,7 @@ abstract: |
   development not only depends on previous relationships found but also on
   connections made during exploitation of this novel new experimental
   protocol.
----
+----
 
 # Introduction
 
@@ -31,7 +32,7 @@ This paper presents a detailed examination of the development of CyFi, from its 
 
 > There are tens of thousands of lakes that matter for recreation and drinking water. Cyanobacterial blooms pose real risks in many of them, and we really don't know when or where they show up, except in the largest lakes.
 >
-> -- Dr. Rick Stumpf, Oceanographer, NOAA, National Centers for Coastal Ocean Science
+> -- Dr. Rick Stumpf, Oceanographer, NOAA, National Centers for Coastal Ocean Science[^footnote-1]
 
 Harmful algal blooms are a pressing environmental and public health issue, characterized by the rapid and excessive growth of algae in water bodies. These blooms can produce toxins, such as microcystins and anatoxins, that pose severe risks to human health, pets, and aquatic ecosystems. Being exposed to these toxins through ingestion, skin contact, or inhalation can result in a variety of acute and chronic health issues, including gastrointestinal illnesses, liver damage, neurological effects, and even death in extreme cases. The most common risks of exposure are drinking from a contaminated reservoir and swimming in a contaminated lake, which is particularly dangerous for pets.
 
@@ -41,7 +42,7 @@ These ecological impacts can have devastating economic consequences for local in
 
 Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
 
-Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. One of the leading satellite-based tools for cyanobacteria detection is the [CyAN index](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers.
+Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. One of the leading satellite-based tools for cyanobacteria detection is [CyAN's Cyanobacteria Index (CI)](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers.
 
 :::{figure} 10m.png
 :label: fig:10m
@@ -456,8 +457,9 @@ As states begin experimenting with CyFi, we recommend calculating historical est
 
 CyFi is a powerful tool for identifying high and low levels of cyanobacteria and enables humans to make more informed decisions when it comes to issuing public health guidance around current cyanobacteria levels. Areas with low density cyanobacteria counts can be excluded from ground sampling to better priorize limited resources, while areas with high density cyanobacteria counts can be prioritized for public health action. The development of CyFi illustrates the utility of machine learning competitions as a first step toward open source tools. CyFi's primary use cases show how machine learning can be incorporated into human workflows to enable more efficient and more informed decisionmaking.
 
-
 --------------------------
+
+
 
 
 Twelve hundred years ago — in a galaxy just across the hill...
@@ -685,4 +687,4 @@ Perhaps we want to end off with a quote by Lao Tse[^footnote-3]:
 
 > 
 
-[^footnote-3]: $\mathrm{e^{-i\pi}}$
+[^footnote-1]: https://www.drivendata.org/competitions/143/tick-tick-bloom/page/761/
