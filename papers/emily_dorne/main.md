@@ -88,15 +88,7 @@ Participants predicted a severity category for a given sampling point as shown i
   - $\ge$10,000,000
 ```
 
-One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
-
-:::{figure} ttb_winner_sources.png
-:label: fig:ttb_winner_sources
-Data sources used by Tick Tick Bloom competition winners
-:::
-
-
-TODO: competition results
+Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). The winning submission had an average root mean squared error (RMSE) of 0.76. More details on the competition winning model approaches and results can be found here: https://drivendata.co/blog/tick-tick-bloom-challenge-winners.
 
 ## Carrying foward competition models
 
@@ -318,25 +310,14 @@ Detailed instructions on using CyFi can be found in the [CyFi docs](https://cyfi
 
 Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
-## Use cases
+## Competition learnings
 
-The general use cases for CyFi are as follows.
+One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
 
-1) Provide a birds-eye view of conditions in lakes across the state
-
-Some states rely on public reporting of blooms. CyFi can quickly and easily estimate cyanobacteria levels in water bodies across the state. This is particuarly important for regulatory and impairment work.
-
-2) Confirm publicly reported blooms with more data
-
-Some states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can estimate the cyanobacteria levels and provide an additional data point, allowing the individual to make a more informed decision.
-
-3) Identify places where sampling is not needed
-
-Identifying water bodies that are not impaired can be just as helpful as identifying water bodies that are. CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
-
-4) Identify areas needing public health intervention
-
-On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
+:::{figure} ttb_winner_sources.png
+:label: fig:ttb_winner_sources
+Data sources used by Tick Tick Bloom competition winners
+:::
 
 
 ## User interviews
@@ -387,6 +368,27 @@ Below are the core decisions that resulted from the model experimentation and re
 **Estimate density instead of severity**: We learned in the user interviews that states use different thresholds for action, so predicting density instead of severity categories supports a broader range of use cases. The winning competition models were trained to predict severity, so the first experiment we ran was predicting on density to see if there was enough signal in the feature data to suppor this.
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
+
+## Use cases
+
+The general use cases for CyFi are as follows.
+
+1) Provide a birds-eye view of conditions in lakes across the state
+
+Some states rely on public reporting of blooms. CyFi can quickly and easily estimate cyanobacteria levels in water bodies across the state. This is particuarly important for regulatory and impairment work.
+
+2) Confirm publicly reported blooms with more data
+
+Some states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can estimate the cyanobacteria levels and provide an additional data point, allowing the individual to make a more informed decision.
+
+3) Identify places where sampling is not needed
+
+Identifying water bodies that are not impaired can be just as helpful as identifying water bodies that are. CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
+
+4) Identify areas needing public health intervention
+
+On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
+
 
 ## Future directions
 
