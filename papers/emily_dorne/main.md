@@ -115,13 +115,13 @@ An open-source Python package brings together these improvements to enable regul
 
 ### User interviews
 
-To ensure the development of a user-centered and effective code package for detecting harmful algal blooms, we conducted human-centered design intervies with subject matter experts and end users. We conducted interviews with representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected as they present a varying range of geographic locations, number of water bodies in the region, HAB severity, investment in HABs / resource availability, and technical sophistication of current approaches. The focus of the user interviews was on understanding current water quality decision-making processes, including the data and tools used to support those decisions. We anticipated the learnings to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
+We conducted human-centered design interviews with subject matter experts and end users to design a package that optimally address on-the-ground user needs. Interviewees included representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected because they present a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
 
-@tbl:interview_takeaways summarizes the core design decsisions for CyFi that were rooted in insights from these interviews.
+@tbl:interview_takeaways summarizes the core design decsisions for CyFi that were rooted in insights from user interviews.
 
 ### Model experimentation
 
-In carrying forward the winning approaches into a robust, accurate, and generalizable solution, additional model testing and experimentation and tested was needed. The table below summarizes the matrix of experiments that were conducted. The core levers were the data sources, satellite data processing choice, and the target variable. We did follow best practices in tuning hyperparameters for the final model.
+Additional model testing was conducted to determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting. The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and what target variable the model generated. Standard best practices were used to inform hyperparameters tuning for the final model.
 
 ```{list-table} Model experimentation summary
 :label: tbl:experiments
@@ -156,13 +156,15 @@ CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses
 
 ## Data sources
 
-CyFi relies on two data sources as input: Sentinel-2 satellite imagery and land cover classifications from the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS).
+CyFi relies on two data sources as input:
+1. Sentinel-2 satellite imagery
+2. Land cover classifications from the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS)
 
-Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission. The Sentinel-2 Multispectral Instrument (MSI) samples 13 spectral bands: four bands at 10 meters, six bands at 20 meters and three bands at 60 meters spatial resolution. The mission provides a global coverage of the Earth's land surface every 5 days. Sentinel-2 data is accessed through Microsoft's Planetary Computer.
+**Sentinel-2** is a wide-swath, high-resolution, multi-spectral imaging mission. The Sentinel-2 Multispectral Instrument (MSI) samples 13 spectral bands: four bands at 10 meters, six bands at 20 meters and three bands at 60 meters spatial resolution. The mission provides global coverage of the Earth's land surface every 5 days. Sentinel-2 data was accessed through Microsoft's Planetary Computer.
 
-CyFi uses high-resolution Sentinel-2 satellite imagery (10-30m) to focus on smaller water bodies with rapidly changing blooms. This is a significant improvement in resolution over Sentinel-3 (300-500m), which is used by most existing satellite-based cyanobacteria detection tools.
+CyFi uses high-resolution Sentinel-2 satellite imagery (10-30m) to focus on smaller water bodies with rapidly changing blooms. This is a significant improvement in resolution over Sentinel-3, which is used by most existing satellite-based cyanobacteria detection tools and has a resolution of 300-500m.
 
-The Climate Research Data Package (CRDP) Land Cover Gridded Map (2020) classifies land surface into 22 classes, which have been defined using the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS). This map is based on data from the Medium Resolution Imaging Spectrometer (MERIS) sensor on board the polar-orbiting Envisat-1 environmental research satellite by the European Space Agency. CyFi accesses the data comes from the CCI-LC database hosted by the ESA Climate Change Initiative's Land Cover project ([source](https://www.esa-landcover-cci.org/?q=node/164)).
+The Climate Research Data Package (CRDP) **Land Cover Gridded Map** (2020) classifies land surface into 22 classes, which have been defined using the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS). The map is based on data from the Medium Resolution Imaging Spectrometer (MERIS) sensor on board the polar-orbiting Envisat-1 environmental research satellite by the European Space Agency. CyFi accesses the data using the CCI-LC database hosted by the ESA Climate Change Initiative's Land Cover project ([source](https://www.esa-landcover-cci.org/?q=node/164)).
 
 ## Feature processing
 
