@@ -356,9 +356,30 @@ All three winners used gradient boosted decision tree models such as LightGBM, X
 
 - [ ] TODO: add links to winners repo, winners write ups, winners announcement, results page
 
+## User interviews
+
+The first part of carrying winning models forward into a user-friendly approach is gaining an understanding the needs and workflows of end users. This is critical to ensuring the tool solves a real user need, otherwise adoption will be minimal. Below, we synthesize the key insights gleaned from user interviews and how they informed package development.
+
+```{list-table} CyFi design decisions rooted in HCD interviews
+:label: tbl:interview_takeaways
+:header-rows: 1
+* - Interview insight
+  - CyFi design decision
+* - States tend to have designated sampling locations or locations of reported blooms. Continuous coverage of a lake is nice but not necessary.
+  - CyFi will expect sampling points as input rather than polygons and the output will be point-estimates rather than a gridded heatmap.
+* - Thresholds are not universal and actions vary by state.
+  - Prediction will be a density value rather than severity category.
+* - While blooms in small water bodies can change quickly, the maximum cyanobacteria estimation cadence is daily
+  - A sampling point will be a unique combination of date, latitude, and longitude. Additional time granularity is not needed. The CyFi model should be able to produce estimates for thousands of points in a day on a normal laptop.
+* - Many states include a visual review of imagery (satellite or submitted photo) as part of the decision-making process.
+  - Including a way to see the underlying satellite data for a given prediction point will help users build confidence and intution around the CyFi model.
+* - States have their own tools for managing water quality data (e.g. ground samples and lab results).
+  - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
+```
+
 ## Model experimentation
 
-At a high level, the goal of the subsequent model experimentation work was the combine the best attributes of the winning approaches into a single solution and produce a robust, generalizable model.
+The second part of carrying winning models forward is the technical iteration needed to produce a deployment-ready model. We aimed to combine the best attributes of the winning approaches into a single solution and produce a robust, generalizable model.
 
 One of the risks in a machine learning competition is overfitting to the test set or picking up on patterns specific to the competition data that don't hold outside of the competition. We sought to identify and remove competition artifacts that would hamper the generalizability of the model in a open source package.
 
@@ -368,7 +389,7 @@ A number of winners pointed out that not all of the sampling points appeared to 
 
 We calculated the distance between each sample and the nearest water body was calculated using the [European Space Agency (ESA) WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine as the water classification appeared to be more reliable than the Sentinel-2 SCL band based on visual review of samples. Samples farther than 550m from a water body are excluded. This helps ensure that the relevant water body falls within the bounding box so the model learns from examples that reflect real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error.
 
-After reducing the noise in the training labels and reducing the likelihood of overfitting to the test set, we ran over 20 experiments to identify the optimal configuration for the pipeline. Below are the core decisions that resulted from the model experimentation and retraining based on competition-winning approaches.
+After reducing the noise in the training labels and reducing the likelihood of overfitting to the test set, we ran over 20 experiments to identify the optimal configuration for the model training pipeline. Below are the core decisions that resulted from the model experimentation and retraining based on competition-winning approaches.
 
 ### Data decisions
 
@@ -394,24 +415,7 @@ After reducing the noise in the training labels and reducing the likelihood of o
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
 
-## User interviews
 
-```{list-table} CyFi design decisions rooted in HCD interviews
-:label: tbl:interview_takeaways
-:header-rows: 1
-* - Interview insight
-  - CyFi design decision
-* - States tend to have designated sampling locations or locations of reported blooms. Continuous coverage of a lake is nice but not necessary.
-  - CyFi will expect sampling points as input rather than polygons and the output will be point-estimates rather than a gridded heatmap.
-* - Thresholds are not universal and actions vary by state.
-  - Prediction will be a density value rather than severity category.
-* - While blooms in small water bodies can change quickly, the maximum cyanobacteria estimation cadence is daily
-  - A sampling point will be a unique combination of date, latitude, and longitude. Additional time granularity is not needed. The CyFi model should be able to produce estimates for thousands of points in a day on a normal laptop.
-* - Many states include a visual review of imagery (satellite or submitted photo) as part of the decision-making process.
-  - Including a way to see the underlying satellite data for a given prediction point will help users build confidence and intution around the CyFi model.
-* - States have their own tools for managing water quality data (e.g. ground samples and lab results).
-  - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
-```
 
 ## Use cases
 
