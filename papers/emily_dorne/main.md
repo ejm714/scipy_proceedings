@@ -417,31 +417,44 @@ After reducing the noise in the training labels and reducing the likelihood of o
 
 ## Use cases
 
-The general use cases for CyFi are as follows.
+Due to the moderate accuracy of the current CyFi model, we believe CyFi should be used to inform human workflows and should not be used to trigger automatic actions. CyFi works best as an enhancement to existing decision-making processes, through its ability to surface high and low priority areas. Based on discussions with end users, we believe the general use cases for CyFi are as follows.
 
-1) Provide a birds-eye view of conditions in lakes across the state
+1) Flag high severity blooms for public health action
+
+High concentrations of cyanobacteria often merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions. Having daily estimates at designated sampling points can quickly and easily surface potentially worrisome conditions. States have the flexibility to design their own processes for how to use this information. For example, some states may choose to prioritize these locations for ground sampling where advisory levels are dependent upon toxin analysis resutls. Other states may choose to take action such as issuing a press release based on visual review of imagery alone.
+
+2) Identify locations where ground sampling can be deprioritized
+
+Identifying water bodies that are not experiencing blooms can be just as helpful as identifying water bodies that are. Ground sampling is time and labor intensive and it can be difficult to effectively prioritize areas without knowledge of conditions. CyFi estimates provide information on which areas are least likely to contain blooms, which enables water quality managers to deprioritize sampling in these areas.
+
+3) Confirm publicly reported blooms with more data
+
+Multiple states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can both generate a cyanobacteria density estimate and show the most recent, cloud free 10m satellite data for that location, enabling the water quailty manager to make a more informed decision.
+
+4) Provide a birds-eye view of conditions in lakes across the state
+
+
+
+CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
 
 Some states rely on public reporting of blooms. CyFi can quickly and easily estimate cyanobacteria levels in water bodies across the state. This is particuarly important for regulatory and impairment work.
 
-2) Confirm publicly reported blooms with more data
 
-Some states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can estimate the cyanobacteria levels and provide an additional data point, allowing the individual to make a more informed decision.
 
-3) Identify places where sampling is not needed
 
-Identifying water bodies that are not impaired can be just as helpful as identifying water bodies that are. CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
+Overall, CyFi supports more widespread and timely public health actions, better allocation of ground sampling resources, and more informed impairment and regulatory monitoring.
 
-4) Identify areas needing public health intervention
 
-On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
 
 ## Future directions
 
-While CyFi represents a significant step forward in detecting cyanobacteria from satelilte imagery, challenges remain. CyFi is least reliable in very narrow or small waterways, where there are clouds in the bounding box, or where there are multiple water bodies in the image. Recommended next steps for model improvements include: retraining with additional ground measurements for true negative cases, adding water body segmentation to exclude pixels from non-contiguous water bodies, and adding cloud segmentation to remove cloud pixels from being included in feature calculations. Additionally, incorporating more sophisticated time-series climate featuers may enhance model accuracy. To support users who desire comprehensive estimates across the entire lake, a pre-processing step can be added that accepts a polygon and produces a grid of sample points.
+While CyFi represents a significant step forward in detecting cyanobacteria from satelilte imagery, challenges remain. CyFi is least reliable in very narrow or small waterways, where there are clouds in the bounding box, or where there are multiple water bodies in the image. We believe model performance can be improved by retraining with additional ground measurements for true negative cases, adding water body segmentation to exclude pixels from non-contiguous water bodies, and adding cloud segmentation to remove cloud pixels from being included in feature calculations. Additionally, incorporating more sophisticated time-series climate featuers may enhance model accuracy. To support users who desire comprehensive estimates across the entire lake, a pre-processing step can be added that accepts a water body polygon as input and transforms this into a grid of sample points.
+
+As states begin experimenting with CyFi, we recommend calculating historical estimates and comparing these against prior ground measurements to get a baseline accuracy for CyFi's performance in that context. Using CyFi Explorer to review those predictions can provide further insight into water bodies that may be particularly challenging for CyFi.
 
 # Conclusion
 
-CyFi is a powerful tool for identifying high and low levels of cyanobacteria and enables humans to make more informed decisions when it comes to issuing public health guidance around current cyanobacteria levels. Areas with low density cyanobacteria counts can be excluded from ground sampling to better priorize limited resources, while areas with high density cyanobacteria counts should prioritized for public health action. The development of CyFi showcases the utility of machine learning competitions as a first step toward open source tools, while the end result illustrates how machine learning can plug into human workflows to enable more efficient and more informed decisionmaking.
+CyFi is a powerful tool for identifying high and low levels of cyanobacteria and enables humans to make more informed decisions when it comes to issuing public health guidance around current cyanobacteria levels. Areas with low density cyanobacteria counts can be excluded from ground sampling to better priorize limited resources, while areas with high density cyanobacteria counts can be prioritized for public health action. The development of CyFi illustrates the utility of machine learning competitions as a first step toward open source tools. CyFi's primary use cases show how machine learning can be incorporated into human workflows to enable more efficient and more informed decisionmaking.
 
 
 --------------------------
