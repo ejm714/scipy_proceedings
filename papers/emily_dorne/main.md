@@ -189,7 +189,13 @@ Location and distribution of training and evaluation data for CyFi.
 
 TODO: add details on train/test split
 
-## Generating cyanobacteria estimates with CyFi
+
+### Performance
+
+TODO: comparison with CyAN
+
+
+## Using CyFi
 
 CyFi is designed to be simple to use. First install CyFi with pip.
 
@@ -298,13 +304,19 @@ TODO: add WHO ranges
   </table>
 :::
 
-Detailed instructions can be found in the [CyFi docs](https://cyfi.drivendata.org/).
+CyFi also comes with a visualization tool called [CyFi Explorer](https://cyfi.drivendata.org/explorer/). CyFi Explorer surfaces the corresponding Sentinel-2 imagery for each cyanobacteria estimate. The explorer runs locally on the user's machine and is intended to enable exploration of where the model is performing well as well as edge cases or failure modes. It is not intended to replace more robust data analytics tools and decision-making workflows.
 
-## Visualizing cyanobacteria estimates with the CyFi Explorer
+:::{figure} cyfi_explorer.jpg
+:label: fig:cyfi_explorer
+:width: 700px
+Screenshot of CyFi Explorer, a visualization tool that surfaces the underlying satellite imagery used to generate the cyanobacteria estimate.
+:::
 
+Detailed instructions on using CyFi can be found in the [CyFi docs](https://cyfi.drivendata.org/).
 
+# Discussion
 
-
+Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
 ## Use cases
 
@@ -326,19 +338,6 @@ Identifying water bodies that are not impaired can be just as helpful as identif
 
 On the contrary, places likely to contain severe concentrations of cyanobacteria often times merit public health interventions like drinking water, swimming, and/or recreational advisories or prohibitions.
 
-
-# Model performance
-
-## Comparison to CyAN
-
-
-
-
-
-
-# Discussion
-
-Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
 ## User interviews
 
