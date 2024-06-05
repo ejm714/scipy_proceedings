@@ -1,7 +1,7 @@
 ---
 # Ensure that this title is the same as the one in `myst.yml`
 title: Using Satellite Imagery to Identify Harmful Algal Blooms and Protect Public Health
----
+
 abstract: |
   A short version of the long version that is way too long to be written as a
   short version anyway.  Still, when considering the facts from first
@@ -12,7 +12,7 @@ abstract: |
   development not only depends on previous relationships found but also on
   connections made during exploitation of this novel new experimental
   protocol.
-----
+---
 
 # Introduction
 
