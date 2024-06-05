@@ -113,7 +113,7 @@ To ensure the development of a user-centered and effective code package for dete
 
 ### Model experimentation
 
-In carrying forward the winning approaches into a robust, accurate, and generalizable solution, additional model testing and experimentation and tested was needed. The table below summarizes the matrix of experiments that were conducted. The core levers were the data sources, satellite data processing choice, and the target variable. We did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model. We did follow best practices in tuning hyperparameters for the final model.
+In carrying forward the winning approaches into a robust, accurate, and generalizable solution, additional model testing and experimentation and tested was needed. The table below summarizes the matrix of experiments that were conducted. The core levers were the data sources, satellite data processing choice, and the target variable. We did follow best practices in tuning hyperparameters for the final model.
 
 ```{list-table} Model experimentation summary
 :label: tbl:experiments
@@ -339,40 +339,22 @@ Detailed instructions on using CyFi can be found in the [CyFi docs](https://cyfi
 
 # Discussion
 
-Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
+Machine learning is particularly well-suited to cyanobacteria detection because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state. The progression from a machine learning competition that surfaced promising approaches, through subsequent user interviews and model iteration, to a deployment-ready open source package illustrates a replicable pathway for developing powerful machine learning tools in domain-specific areas.
 
 ## Competition learnings
 
-All three winners used gradient boosted decision tree models such as LightGBM, XGBoost, and CatBoost. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining.
+One of the key goals of the competition was to identify the most useful data sources and methods for cyanobacteria estimation in inland lakes and waterways.
 
-- [ ] TODO: add links to winners repo, winners write ups, winners announcement, results page
-
-One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
+Below is a summary of which datasets were used by winners. We found that all winners used Level-2 satellite imagery instead of Level-1, as it includes atmospheric correction. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
 
 :::{figure} ttb_winner_sources.png
 :label: fig:ttb_winner_sources
 Data sources used by Tick Tick Bloom competition winners
 :::
 
+All three winners used gradient boosted decision tree models such as LightGBM, XGBoost, and CatBoost. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. In subsequent work, we did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model.
 
-## User interviews
-
-```{list-table} CyFi design decisions rooted in HCD interviews
-:label: tbl:interview_takeaways
-:header-rows: 1
-* - Interview insight
-  - CyFi design decision
-* - States tend to have designated sampling locations or locations of reported blooms. Continuous coverage of a lake is nice but not necessary.
-  - CyFi will expect sampling points as input rather than polygons and the output will be point-estimates rather than a gridded heatmap.
-* - Thresholds are not universal and actions vary by state.
-  - Prediction will be a density value rather than severity category.
-* - While blooms in small water bodies can change quickly, the maximum cyanobacteria estimation cadence is daily
-  - A sampling point will be a unique combination of date, latitude, and longitude. Additional time granularity is not needed. The CyFi model should be able to produce estimates for thousands of points in a day on a normal laptop.
-* - Many states include a visual review of imagery (satellite or submitted photo) as part of the decision-making process.
-  - Including a way to see the underlying satellite data for a given prediction point will help users build confidence and intution around the CyFi model.
-* - States have their own tools for managing water quality data (e.g. ground samples and lab results).
-  - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
-```
+- [ ] TODO: add links to winners repo, winners write ups, winners announcement, results page
 
 ## Model experimentation
 
@@ -381,6 +363,8 @@ Below are the core decisions that resulted from the model experimentation and re
 ### Data decisions
 
 **Sentinel-2 as sole satellite source**: We found that Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. We chose to use Sentinel-2 as the sole data source as downloading satellite data is the slowest part of the prediction process and we expect CyFi primarily to be used in a forward looking way. Chosing to rely only on Sentinel-2 data meant that we removed any samples prior to the launch of Sentinel-2 from the training and evaluation sets. This decreased the dataset size by XX.
+
+- [ ] TODO: add decrease in size of dataset points by limiting to Sentinel-2
 
 **Exclude climate and elevation features**: Similarly, we found that climate and elevation features primarily provided value for data points prior to the launch of Sentinel-2 and so are not used in the final CyFi model. We recognize that climate and elevation likely do have an impact on how cyanobacteria blooms form, and more sophisticated feature engineering with these data sources may add value in the future. This is a direction for future research.
 
@@ -403,6 +387,25 @@ Below are the core decisions that resulted from the model experimentation and re
 **Estimate density instead of severity**: We learned in the user interviews that states use different thresholds for action, so predicting density instead of severity categories supports a broader range of use cases. The winning competition models were trained to predict severity, so the first experiment we ran was predicting on density to see if there was enough signal in the feature data to suppor this.
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
+
+## User interviews
+
+```{list-table} CyFi design decisions rooted in HCD interviews
+:label: tbl:interview_takeaways
+:header-rows: 1
+* - Interview insight
+  - CyFi design decision
+* - States tend to have designated sampling locations or locations of reported blooms. Continuous coverage of a lake is nice but not necessary.
+  - CyFi will expect sampling points as input rather than polygons and the output will be point-estimates rather than a gridded heatmap.
+* - Thresholds are not universal and actions vary by state.
+  - Prediction will be a density value rather than severity category.
+* - While blooms in small water bodies can change quickly, the maximum cyanobacteria estimation cadence is daily
+  - A sampling point will be a unique combination of date, latitude, and longitude. Additional time granularity is not needed. The CyFi model should be able to produce estimates for thousands of points in a day on a normal laptop.
+* - Many states include a visual review of imagery (satellite or submitted photo) as part of the decision-making process.
+  - Including a way to see the underlying satellite data for a given prediction point will help users build confidence and intution around the CyFi model.
+* - States have their own tools for managing water quality data (e.g. ground samples and lab results).
+  - CyFi will output a simple CSV file that includes identifying columns for joining with external data.
+```
 
 ## Use cases
 
