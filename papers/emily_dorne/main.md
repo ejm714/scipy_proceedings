@@ -39,6 +39,19 @@ Despite the severe consequences of HABs, existing monitoring tools and methods a
 
 Existing satellite-based monitoring tools offer broad coverage but fall short in terms of spatial resolution, making them inadequate for monitoring smaller inland lakes, reservoirs, and rivers where HABs frequently occur. One of the leading satellite-based tools for cyanobacteria detection is the [CyAN index](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/), which relies on the [Ocean and Land Colour Instrument (OCLI)](https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/olci/) on Sentinel-3. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore can't provide the data needed for effective early warning and rapid response to HAB outbreaks.
 
+:::{figure} 10m.png
+:label: fig:10m
+:width: 500px
+An example of a water body at 10m resolution
+:::
+
+:::{figure} 30m.png
+:label: fig:30m
+:width: 500px
+An example of the @fig:10m image at 30m resolution
+:::
+
+
 The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
 
 # Methods
@@ -134,50 +147,26 @@ During experimentation, the model was trained on roughly 13,000 samples and eval
 
 # Results
 
-## CyFi overview
-
-For each sampling point – a unique combination of date, latitude, and longitude – CyFi downloads recent cloud-free Sentinel-2 data from Microsoft's Planetary Computer, calculates a set of summary statistics for a bounding box around the sampling point, and passes that feature row into a LightGBM model which produces an estimated cyanobacteria density.
-
-CyFi is a command line tool that requires only two lines of code to run. Simply pip install the package and then run `cyfi predict` for batch estimates or `cyfi predict-point` for single point estimates.
-
-CyFi is a command line tool that downloads relevant satellite data and runs a trained machine learning algorithm that estimates cyanobacteria density for specified sampling points. A sampling point is a unique combination of date, latitude, and longitude.
-
-Detailed instructions can be found in the CyFi docs.
-
-CyFi supports batch predictions as well as sin
-
-## Core functionality
-
-## Under the hood
+CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels, one type of HAB. CyFi can help decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily.
 
 ### Data sources
 
 CyFi relies on two data sources as input: Sentinel-2 satellite imagery and land cover classifications from the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS).
 
-#### Sentinel-2
+Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission. The Sentinel-2 Multispectral Instrument (MSI) samples 13 spectral bands: four bands at 10 meters, six bands at 20 meters and three bands at 60 meters spatial resolution. The mission provides a global coverage of the Earth's land surface every 5 days. Sentinel-2 data is accessed through Microsoft's Planetary Computer.
 
-Sentinel-2 is a wide-swath, high-resolution, multi-spectral imaging mission. It supports the monitoring of vegetation, soil and water cover, as well as observation of inland waterways and coastal areas. The Sentinel-2 Multispectral Instrument (MSI) samples 13 spectral bands: four bands at 10 meters, six bands at 20 meters and three bands at 60 meters spatial resolution. The mission provides a global coverage of the Earth's land surface every 5 days. Sentinel-2 data is accessed through Microsoft's Planetary Computer.
+CyFi uses high-resolution Sentinel-2 satellite imagery (10-30m) to focus on smaller water bodies with rapidly changing blooms. This is a significant improvement in resolution over Sentinel-3 (300-500m), which is used by most existing satellite-based cyanobacteria detection tools.
 
-#### Land cover
-The Climate Research Data Package (CRDP) Land Cover Gridded Map (2020) classifies land surface into 22 classes, which have been defined using the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS). This map is based on data from the Medium Resolution Imaging Spectrometer (MERIS) sensor on board the polar-orbiting Envisat-1 environmental research satellite by the European Space Agency. This data comes from the CCI-LC database hosted by the ESA Climate Change Initiative's Land Cover project ([source](https://www.esa-landcover-cci.org/?q=node/164)).
-
-
-### Training data
-
-The machine learning model underpinning CyFi was trained and evaluated using a comprehensive dataset of in-situ measurements of cyanobacteria density from across the United States, including 8,979 observations for training and 4,035 for testing and evaluation.
-
-X observation for training, Y for testing
-Train/test split criteria
-
-
+The Climate Research Data Package (CRDP) Land Cover Gridded Map (2020) classifies land surface into 22 classes, which have been defined using the United Nations Food and Agriculture Organization's Land Cover Classification System (LCCS). This map is based on data from the Medium Resolution Imaging Spectrometer (MERIS) sensor on board the polar-orbiting Envisat-1 environmental research satellite by the European Space Agency. CyFi accesses the data comes from the CCI-LC database hosted by the ESA Climate Change Initiative's Land Cover project ([source](https://www.esa-landcover-cci.org/?q=node/164)).
 
 ### Feature processing
 
 Each observation (or "sampling point") is a unique combination of date, latitude, and longitude. Satellite imagery feature generation for each observation is as follows:
+
   1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
   2. Select the most recent image that has a bounding box containing fewer than 5% of cloud pixels. If none of the images meet this criteria, no prediciton is made for that sampling point.
   3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band.
-  4. Generate summary statistics (e.g., mean, max, min) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands. Features include the mean, minimum, maximum, and range for 15 different bands, both visible and non-visible (AOT, B01, B02, B03, B04, B05, B06, B07, B08, B09, B11, B12, B8A, SCL, WVP), as well as normalized difference vegetation index calculations generated by combining the NIR band separately with the red band (B4) and three vegetation red bands (B5, B6, B7).
+  4. Generate summary statistics (e.g., mean, 95th percentile) and ratios (e.g, NDVI) using the 15 Sentinel-2 bands. The full list of satellite image features is here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L93-L121
   
 :::{figure} feature_creation.png
 :label: fig:feature_creation
@@ -187,19 +176,134 @@ Mock up of satellite data selection and processing. The dot represents the sampl
 
 Finally, the land cover value for each sampling point is looked up from the static land cover map, and added to the satellite features.
 
-
-
-
 ### Model
 
-LightGGM
+Cyanobacteria estimates are then generated by a [LightGBM](https://github.com/microsoft/LightGBM) model, a gradient-boosted decision tree algorithm. The hyperparameters can be found here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L188-L196
+
+The model was trained and evaluated using "in situ" labels collected manually by many organizations across the U.S., visualized below.
+
+:::{figure} train_test.png
+:label: fig:train_test
+Location and distribution of training and evaluation data for CyFi.
+:::
+
+TODO: add details on train/test split
+
+## Generating cyanobacteria estimates with CyFi
+
+CyFi is designed to be simple to use. First install CyFi with pip.
+
+```bash
+$ pip install cyfi
+```
+
+Then generate a cyanobacteria prediction in a single command.
+
+```bash
+$ cyfi predict-point --lat 35.6 --lon -78.7 --date 2023-09-25
+
+SUCCESS  | Estimate generated:
+date                    2023-09-25
+latitude                      35.6
+longitude                    -78.7
+density_cells_per_ml        22,836
+severity                  moderate
+
+```
+
+For each sampling point – a unique combination of date, latitude, and longitude – CyFi downloads recent cloud-free Sentinel-2 data from Microsoft's Planetary Computer, calculates a set of summary statistics using the spectral bands for the portion of the image around the sampling point, and passes those features to a LightGBM model which produces an estimated cyanobacteria density.
 
 
-### Predictions
+CyFi makes it easy to generating cyanobacteria estimates for many points at once. Simply create a csv that contains date, latitude, and longitude and use this as your input.
 
-Density estimates along with severity level based on WHO buckets.
+:::{table} Example input csv (`samples.csv`) containing the sampling points where cyanobacteria estiamtes are needed
+:label: tbl:cyfi_preds
+<table>
+  <thead>
+        <tr>
+            <th>latitude</th>
+            <th>longitude</th>
+            <th>date</th>
+        </tr>
+  </thead>
+  <tbody>
+        <tr>
+            <td>41.424144</td><td>-73.206937</td><td>2023-06-22</td>
+        </tr>
+        <tr>
+            <td>36.045</td><td>-79.0919415</td><td>2023-07-01</td>
+        </tr>
+        <tr>
+            <td>35.884524</td><td>-78.953997</td><td>2023-08-04</td>
+        </tr>
+  </tbody>
+</table>
+:::
 
-## CyFi explorer
+
+Then run:
+
+```bash
+$ cyfi predict samples.csv
+
+SUCCESS  | Loaded 3 sample points (unique combinations of date, latitude, and longitude) for prediction
+SUCCESS  | Downloaded satellite imagery
+SUCCESS  | Cyanobacteria estimates for 4 sample points saved to preds.csv
+
+```
+
+Cyanobacteria estimates are saved out as a CSV that can be plugged into any existing decision-making process. For each point, the model provides an estimated density in cells per mL for detailed analysis. Densities are also discretrized into a severity level based on World Health Organization (WHO) guidelines.
+
+TODO: add WHO ranges
+
+:::{table} CyFi outputted csv (`preds.csv`) containing predictions
+:label: tbl:cyfi_preds
+  <table>
+    <thead>
+      <tr>
+          <th>sample_id</th>
+          <th>date</th>
+          <th>latitude</th>
+          <th>longitude</th>
+          <th>density_cells_per_ml</th>
+          <th>severity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td>7ff4b4a56965d80f6aa501cc25aa1883</td>
+          <td>2023-06-22</td>
+          <td>41.424144</td>
+          <td>-73.206937</td>
+          <td>34,173</td>
+          <td>moderate</td>
+      </tr>
+      <tr>
+          <td>882b9804a3e28d8805f98432a1a9d9af</td>
+          <td>2023-07-01</td>
+          <td>36.045</td>
+          <td>-79.0919415</td>
+          <td>7,701</td>
+          <td>low</td>
+      </tr>
+      <tr>
+          <td>10468e709dcb6133d19a230419efbb24</td>
+          <td>2023-08-04</td>
+          <td>35.884524</td>
+          <td>-78.953997</td>
+          <td>4,053</td>
+          <td>low</td>
+      </tr>
+    </tbody>
+  </table>
+:::
+
+Detailed instructions can be found in the [CyFi docs](https://cyfi.drivendata.org/).
+
+## Visualizing cyanobacteria estimates with the CyFi Explorer
+
+
+
 
 
 ## Use cases
@@ -230,13 +334,11 @@ On the contrary, places likely to contain severe concentrations of cyanobacteria
 
 
 
-# Origins
-
-
-
 
 
 # Discussion
+
+Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
 ## User interviews
 
