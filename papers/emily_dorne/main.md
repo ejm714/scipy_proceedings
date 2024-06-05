@@ -433,18 +433,10 @@ Multiple states rely on visual inspection of a submitted photo to confirm a bloo
 
 4) Provide a birds-eye view of conditions in lakes across the state
 
-
-
-CyFi can help confirm water bodies that are very likely not to have worrisome cyanobacteria levels, which can help prioritize limited ground sampling staff and resources.
-
-Some states rely on public reporting of blooms. CyFi can quickly and easily estimate cyanobacteria levels in water bodies across the state. This is particuarly important for regulatory and impairment work.
-
-
+- [ ] TODO: fill in based on NY case
 
 
 Overall, CyFi supports more widespread and timely public health actions, better allocation of ground sampling resources, and more informed impairment and regulatory monitoring.
-
-
 
 ## Future directions
 
