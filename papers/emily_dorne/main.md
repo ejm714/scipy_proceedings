@@ -19,9 +19,11 @@ Inland water bodies provide a variety of critical services for both human and aq
 
 While there are established methods for using satellite imagery to detect cyanobacteria in larger water bodies like oceans, detection in small inland lakes and reservoirs remains a challenge. Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
-CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and straightfoward command line interface.
+CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. The strength of CyFi lies in its utilization of Sentinel-2 satellite data, a computationally efficient gradient boosted tree machine learning algorithm, and a straightfoward command line interface.
 
-This paper presents a detailed examination of the development of CyFi, exploring the algorithm's evolution, the dynamics of the prize competition and subsequent experimentation that shaped it, and the broader implications of such competitions for scientific advancements. 
+This paper presents a detailed examination of the development of CyFi, exploring the algorithm's evolution, the dynamics of the prize competition that shaped it, and the broader implications of such competitions for scientific advancements. 
+
+- [ ] TODO: add another sentence about the follow on work (user interviews, model experimentation) and the capabilities of CyFi / why it matters
 
 # Motivation
 
@@ -69,7 +71,9 @@ Labeled samples used in the Tick Tick Bloom competition colored by dataset provi
 
 The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
 
-Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines (TODO: link).
+Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines 
+
+- [ ] TODO: add link to EPA guidelines
 
 ```{list-table} Severity categories used in the Tick Tick Bloom competition
 :label: tbl:severity_categories
@@ -133,7 +137,7 @@ In carrying forward the winning approaches into a robust, accurate, and generali
   - 
 ```
 
-TODO: add details for which features / sizes / etc.
+- [ ] TODO: add details for which features / sizes / etc.
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
 
@@ -179,7 +183,7 @@ The model was trained and evaluated using "in situ" labels collected manually by
 Location and distribution of training and evaluation data for CyFi.
 :::
 
-TODO: add details on train/test split
+- [ ] TODO: add details on train/test split
 
 
 ## Performance
@@ -194,7 +198,7 @@ Counts of cyanobacteria measurements by data provider in the evaluation set.
 
 For the following evaluation, we consider a point to be a non-bloom if cyanobacteria density is less than 20,000 cells/mL, a bloom if cyanobacteria density is greater than 20,000 cells/mL, and a severe bloom if cyanobacteria density is greater than 100,000 cells/mL.
 
-TODO: add justification for the above
+- [ ] TODO: add justification for the above
 
 We find that CyFi can detect 48% of non-blooms with 63% accuracy. Being able to detect places not likely to contain blooms enables ground sampling staff to de-prioritize those areas and better allocate limited resources. We find that CyFi can detect 81% of blooms with 70% accuracy. These are sampling points where ground sampling should be prioritize as there may be negative public health impacts and more precise toxin analysis is needed. Lastly, we find that CyFi can detect 53% of severe bloom cases with 71% accuracy. These are places where negative health impacts are likely to be most severe so they should be prioritized for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery may be sufficient to issue an advisory without additional sampling.
 
@@ -278,7 +282,7 @@ SUCCESS  | Cyanobacteria estimates for 4 sample points saved to preds.csv
 
 Cyanobacteria estimates are saved out as a CSV that can be plugged into any existing decision-making process. For each point, the model provides an estimated density in cells per mL for detailed analysis. Densities are also discretrized into a severity level based on World Health Organization (WHO) guidelines.
 
-TODO: add WHO ranges
+- [ ] TODO: add WHO ranges
 
 :::{table} CyFi outputted csv (`preds.csv`) containing predictions
 :label: tbl:cyfi_preds
