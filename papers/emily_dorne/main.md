@@ -53,7 +53,6 @@ An example of a water body at 10m resolution
 An example of the @fig:10m image at 30m resolution
 :::
 
-
 The limitations of current monitoring techniques highlight the urgent need for more advanced, precise, and accessible tools to detect and manage HABs. This gap in effective monitoring necessitates the development of innovative solutions that utilize higher resolution publicly available satellite data imagery and computationally efficient machine learning models to quickly and effectively detect the presence and extent of harmful algal blooms.
 
 # Methods
@@ -62,16 +61,14 @@ The limitations of current monitoring techniques highlight the urgent need for m
 
 CyFi has its origins in the [Tick Tick Bloom: Harmful Algal Detection Challenge](https://www.drivendata.org/competitions/143/tick-tick-bloom/), which ran from December 2022 to February 2023. This machine learning competition sought to harness the power of community-driven innovation and was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels were manually collected ground samples that were analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets.
+The goal in that challenge was to detect and classify the severity of cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. The ground measurement labels against which predictions were evaluated were manually collected ground samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
 
 :::{figure} ttb_datasets.png
 :label: fig:ttb_datasets
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
 
-The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the [SeaBASS data archive](https://seabass.gsfc.nasa.gov/archive/NASA_HEADQUARTERS/SGupta/CAML/CAML_2013_2021).
-
-Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines 
+Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were based on EPA guidelines.
 
 - [ ] TODO: add link to EPA guidelines
 
@@ -92,7 +89,11 @@ Participants predicted a severity category for a given sampling point as shown i
   - $\ge$10,000,000
 ```
 
-Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). The winning submission had an average root mean squared error (RMSE) of 0.76. More details on the competition winning model approaches and results can be found here: https://drivendata.co/blog/tick-tick-bloom-challenge-winners.
+Much care was taken to create a train test split that would not leak information as lakes in close proximity can experience similar bloom-forming conditions.
+
+- [ ] TODO: add sentence on what final train/test strategy was
+
+Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
 ## Carrying foward competition models
 
@@ -137,7 +138,7 @@ In carrying forward the winning approaches into a robust, accurate, and generali
   - 
 ```
 
-- [ ] TODO: add details for which features / sizes / etc.
+- [ ] TODO: revamp this table and add details for which features / bbox sizes / methods for water or cloud filtering / etc.
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
 
@@ -341,6 +342,10 @@ Detailed instructions on using CyFi can be found in the [CyFi docs](https://cyfi
 Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible from free, routinely collected data sources. Whereas manual water sampling is time and resource intensive, machine learning models can generate estimates in seconds. This allows water managers to prioritize where water sampling will be most beneficial, and can provide a birds-eye view of water conditions across the state.
 
 ## Competition learnings
+
+All three winners used gradient boosted decision tree models such as LightGBM, XGBoost, and CatBoost. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining.
+
+- [ ] TODO: add links to winners repo, winners write ups, winners announcement, results page
 
 One of the key goals of the competition was to identify the most useful data sources for cyanobacteria estimation in inland lakes and waterways. Sentinel-2 data proved to be higher value than Landsat, which was unsurpring given the small size of water bodies and the coarse resolution of Landsat.
 
