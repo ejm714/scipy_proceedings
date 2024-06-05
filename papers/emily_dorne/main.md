@@ -415,8 +415,6 @@ After reducing the noise in the training labels and reducing the likelihood of o
 
 **Train the model to predict log density**: We find transforming density into a log scale for model training and prediction yields better accuracy as the underlying data is log distributed. This helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.
 
-
-
 ## Use cases
 
 The general use cases for CyFi are as follows.
