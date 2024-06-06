@@ -66,12 +66,7 @@ Effectively monitoring inland HABs and protecting public health requires develop
 
 The machine learning approach in CyFi was originally developed as part of the Tick Tick Bloom: Harmful Algal Detection Challenge, which ran from December 2022 to February 2023 [@ttb_results]. Machine learning competition can harness the power of community-driven innovation and rapidly test a wide variety of possible data sources, model architectures, and features. Tick Tick Bloom was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the SeaBASS data archive [@seabass].
-
-:::{figure} ttb_datasets.png
-:label: fig:ttb_datasets
-Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
-:::
+In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data.
 
 Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA guidelines [@epa_guidelines].
 
@@ -94,11 +89,20 @@ Participants predicted a severity category for a given sampling point as shown i
   - $\ge$10,000,000
 ```
 
+Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
+
+### Competition dataset
+
+Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in-situ cyanobacteria measurements is publicly available through the SeaBASS data archive [@seabass].
+
+:::{figure} ttb_datasets.png
+:label: fig:ttb_datasets
+Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
+:::
+
 The competition dataset was split into train and set sets. Train data labels are provided to participants for model training. Test labels are used to evaluate model performance, and are kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage.
 
 Clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. Using [sklearn's DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html), all data points were divided into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
-
-Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
 ## Carrying foward competition models
 
@@ -177,8 +181,97 @@ The model was trained and evaluated using "in situ" labels collected manually by
 Location and distribution of training and evaluation data for CyFi.
 :::
 
-- [ ] TODO: add details on train/test split
+The train and test sets were derived from the [competition data](#competition-dataset) train/test split, with some additional filters applied.
 
+:::{table} Breakdown of data points per year for model data
+:label: tbl:train_test_year
+<table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Test</th>
+      <th>Train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2015</td>
+      <td>254</td>
+      <td>701</td>
+    </tr>
+    <tr>
+      <td>2016</td>
+      <td>484</td>
+      <td>1635</td>
+    </tr>
+    <tr>
+      <td>2017</td>
+      <td>878</td>
+      <td>1921</td>
+    </tr>
+    <tr>
+      <td>2018</td>
+      <td>596</td>
+      <td>1211</td>
+    </tr>
+    <tr>
+      <td>2019</td>
+      <td>891</td>
+      <td>1301</td>
+    </tr>
+    <tr>
+      <td>2020</td>
+      <td>391</td>
+      <td>1119</td>
+    </tr>
+    <tr>
+      <td>2021</td>
+      <td>541</td>
+      <td>1091</td>
+    </tr>
+  </tbody>
+</table>
+:::
+
+:::{table} Breakdown of data points per density range for model data
+:label: tbl:train_test_severity
+<table>
+  <thead>
+    <tr>
+      <th>Density range (cells/mL)</th>
+      <th>Test</th>
+      <th>Train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><20,000</td>
+      <td>1579</td>
+      <td>3793</td>
+    </tr>
+    <tr>
+      <td>20,000 - <100,000</td>
+      <td>700</td>
+      <td>1861</td>
+    </tr>
+    <tr>
+      <td>100,000 - <1,000,000</td>
+      <td>888</td>
+      <td>1818</td>
+    </tr>
+    <tr>
+      <td>1,000,000 - <10,000,000</td>
+      <td>845</td>
+      <td>1466</td>
+    </tr>
+    <tr>
+      <td>≥10,000,000</td>
+      <td>23</td>
+      <td>41</td>
+    </tr>
+  </tbody>
+</table>
+:::
 
 ## Performance
 
