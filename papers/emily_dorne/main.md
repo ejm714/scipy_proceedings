@@ -130,6 +130,135 @@ Additional model testing was conducted to determine which winning approaches wer
 Model experimentation summary
 :::
 
+:::{table} Model experimentation summary
+:label: tbl:experiments
+<table>
+  <thead>
+    <tr>
+      <th>Training data points filter</th>
+      <th>Sentinel-2 image query</th>
+      <th>Sentinel-2 image selection</th>
+      <th>Sentinel-2 pixels used to generate features</th>
+      <th>Sentinel-2 features</th>
+      <th>Additional data sources beyond Sentinel-2</th>
+      <th>Predicted target variable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li>No filter</li>
+          <li>Points within 550 meters of water</li>
+          <li>Points within 1,000m of water</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Time window
+            <ul>
+              <li>15 days</li>
+              <li>30 days</li>
+              <li>60 days</li>
+            </ul>
+          </li>
+          <li>Bounding box around sample point
+            <ul>
+              <li>200m</li>
+              <li>500m</li>
+              <li>1,000m</li>
+              <li>2,000m</li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Cloud filter
+            <ul>
+              <li>None</li>
+              <li>&lt;5%</li>
+            </ul>
+          </li>
+          <li>Missing data filter
+            <ul>
+              <li>None</li>
+              <li>&lt;1%</li>
+            </ul>
+          </li>
+          <li>Images per sample
+            <ul>
+              <li>1</li>
+              <li>Up to 15</li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Bounding box around sample point
+            <ul>
+              <li>100m</li>
+              <li>200m</li>
+              <li>2,000m</li>
+            </ul>
+          </li>
+          <li>Pixel filtering
+            <ul>
+              <li>None</li>
+              <li>Water pixels based on Sentinel-2 SCL band</li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Bands used
+            <ul>
+              <li>Visible only</li>
+              <li>Visible, aerosols, red edge, near infrared, water vapor, shortwave infrared</li>
+            </ul>
+          </li>
+          <li>Individual band statistics
+            <ul>
+              <li>Mean</li>
+              <li>Min</li>
+              <li>Max</li>
+              <li>95th percentile</li>
+            </ul>
+          </li>
+          <li>Multiple-band features
+            <ul>
+              <li>Blue/red ratio</li>
+              <li>Blue/green ratio</li>
+              <li>NDVI: visible red combined with three different red edge bands</li>
+            </ul>
+          </li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>Landsat imagery</li>
+          <li>Climate (temperature, humidity)</li>
+          <li>Elevation</li>
+          <li>Latitude</li>
+          <li>Longitude</li>
+          <li>Land cover</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>WHO severity category</li>
+          <li>Exact density (cells / mL)</li>
+          <li>Log of exact density</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+:::
+
+
 - [ ] TODO: revamp this table and add details for which features / bbox sizes / methods for water or cloud filtering / etc.
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
