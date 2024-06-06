@@ -32,6 +32,7 @@ project:
     HAB: harmful algal bloom
     HCD: human-centered design
     CyAN: Cyanobacteria Assessment Network
+    HCD: human-centered design
   # It is possible to explicitly ignore the `doi-exists` check for certain citation keys
   error_rules:
     - rule: doi-exists
