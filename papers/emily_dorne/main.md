@@ -385,15 +385,7 @@ All winners used Level-2 satellite imagery instead of Level-1, likely because it
 
 ### Model architecture
 
-All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. The model experimentation phase did not explore alternative model architectures given how clearly the competition surfaced the success of a gradient boosted tree model.
-
-- [ ] TODO: move references inline
-
-### Key competition references:
-
-- [Repository of winning solutions on Github](https://github.com/drivendataorg/tick-tick-bloom): Full codebase for each winning solution and winner write-ups describing their methodology
-- [Announcement of results](https://drivendata.co/blog/tick-tick-bloom-challenge-winners): Overview of competition takeaways and brief bios of competition winners
-- [Overview of competition results](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/761/): Brief summary of the competition motivation and outline of all key references
+All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. The model experimentation phase did not explore alternative model architectures given how clearly the competition surfaced the success of a gradient boosted tree model [@ttb_winners_announcement; @ttb_winners_repo].
 
 ## User interviews
 
