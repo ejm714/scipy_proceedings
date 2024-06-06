@@ -14,6 +14,8 @@ abstract: |
   protocol.
 ---
 
+- [ ] TODO: write abstract
+
 # Introduction
 
 Inland water bodies provide a variety of critical services for both human and aquatic life, including drinking water, recreational and economic opportunities, and marine habitats. Harmful algal blooms (HABs) pose a significant risk to inland bodies, requiring water quality managers to make urgent decisions around public health warnings and closures. HABs produce toxins that are poisonous to humans and their pets, and threaten marine ecosystems by blocking sunlight and oxygen.
