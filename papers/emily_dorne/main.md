@@ -71,9 +71,7 @@ In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cya
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
 
-Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA guidelines [@epa_guidelines].
-
-- [ ] TODO: format citation link to EPA guidelines
+Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA and WHO guidelines [@epa_guidelines; @who_guidelines].
 
 ```{list-table} Severity categories used in the Tick Tick Bloom competition
 :label: tbl:severity_categories
