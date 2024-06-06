@@ -112,6 +112,8 @@ However, transforming this research code into production code requires significa
 
 An open-source Python package brings together these improvements to enable regularly generated predictions of cyanobacteria levels. To develop a package, we assessed model performance and efficiency opportunities, combined and iterated on the most useful pieces of the winning approaches into a single model, and simplified and restructured code to transform it into a runnable pipeline. The result is CyFi, a configurable code package capable of generating cyanobacteria predictions on new input data. CyFi is a clean, reproducible repository that incorporates open source best practices, including tests and continuous integration. CyFi is fully ready for integration into state-level dashboards and decision-making processes.
 
+The following sections describe in detail how user interviews and model experimentation informed the final package.
+
 ### User interviews
 
 We conducted human-centered design interviews with subject matter experts and end users to design a package that optimally addresses on-the-ground user needs. Interviewees included representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected because they present a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
@@ -122,30 +124,11 @@ We conducted human-centered design interviews with subject matter experts and en
 
 Additional model testing was conducted to determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting. The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and which target variable was used. Standard best practices were used to inform hyperparameters tuning for the final model.
 
-```{list-table} Model experimentation summary
-:label: tbl:experiments
-:header-rows: 1
-* - Data
-  - Satellite processing
-  - Target variable
-* - Sentinel-2
-  - Bounding box size
-  - Severity category
-* - Landsat
-  - Water filtering
-  - Density
-* - Climate (HRRR)
-  - Cloud filtering
-  - Log density
-* - Elevation (DEM)
-  - Lookback window
-  -
-* - Land cover
-  - Number of images per sampling point
-  - 
-```
-
-- [ ] TODO: revamp this table and add details for which features / bbox sizes / methods for water or cloud filtering / etc.
+:::{figure} model_experimentation.png
+:label: fig:experiments
+:width: 100%
+Model experimentation summary, with final selections in bold.
+:::
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
 
