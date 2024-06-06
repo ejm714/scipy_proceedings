@@ -207,7 +207,7 @@ Performance can vary based on bloom severity as well as location and other attri
 
 ### Benchmark comparison
 
-An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery, CyAN's Cyanobacteria Index, is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 [@doi:10.1038/s41598-019-54453-y; @doi:10.1016/j.hal.2017.06.001; @doi:10.1080/01431160802007640; @doi:10.4319/lo.2010.55.5.2025].
+An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery, CyAN's Cyanobacteria Index, is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
 
 Due to lower resolution of satellite imagery as well as missing data, **CyAN is only able to provide estimates for 30% of points in the evaluation set** described in @fig:eval_data. A major advantage of CyFi is coverage of small water bodies. Over half of the points in the evaluation set were identified as "land" in CyAN due to the coarse resolution of Sentinel-3 imagery. An additional 18% of points had "no data" likely due to clouds or bad imagery. CyAN produced an estimate for 30% (756) points in the evaluation set described in @fig:eval_data.
 
