@@ -420,9 +420,7 @@ Understanding the needs and workflows of end users is critical for ensuring that
 
 ## Model experimentation
 
-The [model experimentation](#model-experimentation) phase combined the insights gained through user interviews with the winning approach to identify the most robust, generalizeable single model. Over 20 model versions were tested to identify the optimal configuration for the training pipeline. Below are the core decisions that resulted from model experimentation and retraining.
-
-- [ ] TODO: update number of experiements
+The [model experimentation](#model-experimentation) phase combined the insights gained through user interviews with the winning approach to identify the most robust, generalizeable single model. Over 30 configurations were tested to identify the optimal setup for the training pipeline. Below are the core decisions that resulted from model experimentation and retraining.
 
 ### Data decisions
 
