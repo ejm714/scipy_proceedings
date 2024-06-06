@@ -328,7 +328,7 @@ Cyanobacteria estimates are saved out as a CSV that can be plugged into any exis
   </table>
 :::
 
-:::{table} WHO (2003) Recreational Guidance/Action Levels for Cyanobacteria. Source: [EPA, 2019](https://www.epa.gov/sites/default/files/2019-09/documents/recommend-cyano-rec-water-2019-update.pdf)
+:::{table} WHO Recreational Guidance/Action Levels for Cyanobacteria [@who_guidelines]
 :label: tbl:cyfi_preds
 <table>
   <thead>
@@ -358,7 +358,6 @@ Cyanobacteria estimates are saved out as a CSV that can be plugged into any exis
 </table>
 :::
 
-- [ ] TODO: format citation for WHO guidelines
 
 ### CyFi Explorer
 
@@ -376,12 +375,7 @@ CyFi's progression from a machine learning competition that surfaced promising a
 
 ## Competition learnings
 
-Some of the key goals of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) were to:
-
-1. Determine whether it was possible to accurately detect cyanobacteria in inland water bodies with machine learning. Measurements of chlorophyll are often used as a proxy for cyanobacteria density. Given the absence of sensors that can spectrophotometrically measure chlorophyll on Sentinel-2, it was unclear how successful machine learning methods would be using primarily red, green, and blue visual bands.
-2. Identify the most useful data sources, features, and modeling methods for cyanobacteria estimation.
-
-- COMMENT HERE: chlorophyll? I'm unclear on the connection here. Is this right?
+The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) was to identify the most useful data sources, features, and modeling methods for cyanobacteria estimation in small, inland water bodies. There was particular interest around the use of Sentinel-2 data, which is has significantly higher resolution than Sentinel-3 and is more suited to smaller water bodies. However, Sentinel-2 does not contain sensors that can spectrophotometrically measure chlorophyll, which is how most Sentinel-3-based cyanobacteria estimates are derived.
 
 ### Machine learning applicability
 
@@ -401,6 +395,8 @@ All winners used Level-2 satellite imagery instead of Level-1, likely because it
 ### Model architecture
 
 All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. The model experimentation phase did not explore alternative model architectures given how clearly the competition surfaced the success of a gradient boosted tree model.
+
+- [ ] TODO: move references inline
 
 ### Key competition references:
 
@@ -432,6 +428,8 @@ Understanding the needs and workflows of end users is critical for ensuring that
 ## Model experimentation
 
 The [model experimentation](#model-experimentation) phase combined the insights gained through user interviews with the winning approach to identify the most robust, generalizeable single model. Over 20 model versions were tested to identify the optimal configuration for the training pipeline. Below are the core decisions that resulted from model experimentation and retraining.
+
+- [ ] TODO: update number of experiements
 
 ### Data decisions
 
