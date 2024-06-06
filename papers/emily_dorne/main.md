@@ -56,8 +56,6 @@ An example of a water body at 10m resolution
 An example of the @fig:10m image at 30m resolution
 :::
 
-- [ ] TODO: I would combine these into one figure with the two images next to one another.
-
 Effectively monitoring inland HABs and protecting public health requires developing new innovative tools that capture a higher spatial resolution, can be run quickly and frequently, and are accessible to decision makers. CyFi aims to fill this gap by incorporating higher-resolution satellite imagery, an efficient tree-based model, and a user-friendly command line interface.
 
 # Methods
@@ -224,6 +222,8 @@ In sum, we find that **CyFi performs at least as well as Sentinel-3 based tools,
 
 ## Using CyFi
 
+Comprehensive instructions for using CyFi can be found in the [CyFi docs](https://cyfi.drivendata.org/). The below provides an overview of some of CyFi's key functionality.
+
 CyFi is designed to be simple to use. To get started, users can install CyFi with pip.
 
 ```bash
@@ -286,8 +286,6 @@ SUCCESS  | Cyanobacteria estimates for 4 sample points saved to preds.csv
 
 Cyanobacteria estimates are saved out as a CSV that can be plugged into any existing decision-making process. For each point, the model provides an estimated density in cells per mL for detailed analysis. Densities are also discretized into severity levels based on World Health Organization (WHO) guidelines.
 
-- [ ] TODO: add WHO ranges
-
 :::{table} CyFi outputted csv (`preds.csv`) containing predictions
 :label: tbl:cyfi_preds
   <table>
@@ -330,17 +328,47 @@ Cyanobacteria estimates are saved out as a CSV that can be plugged into any exis
   </table>
 :::
 
+:::{table} WHO (2003) Recreational Guidance/Action Levels for Cyanobacteria. Source: [EPA, 2019](https://www.epa.gov/sites/default/files/2019-09/documents/recommend-cyano-rec-water-2019-update.pdf)
+:label: tbl:cyfi_preds
+<table>
+  <thead>
+    <tr>
+      <th>Relative Probability of Acute Health Effects</th>
+      <th>Cyanobacteria (cells/mL)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Low</td>
+      <td>&lt; 20,000</td>
+    </tr>
+    <tr>
+      <td>Moderate</td>
+      <td>20,000–100,000</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>&gt;100,000–10,000,000</td>
+    </tr>
+    <tr>
+      <td>Very High</td>
+      <td>&gt; 10,000,000</td>
+    </tr>
+  </tbody>
+</table>
+:::
+
+- [ ] TODO: format citation for WHO guidelines
+
 ### CyFi Explorer
 
-CyFi also comes with a visualization tool called [CyFi Explorer](https://cyfi.drivendata.org/explorer/). CyFi Explorer surfaces the corresponding Sentinel-2 imagery for each cyanobacteria estimate. The explorer runs a Gradio app locally on the user's machine and is intended to enable visual inspection of where the model is performing well as well as edge cases or failure modes. It is not intended to replace more robust data analytics tools and decision-making workflows.
+CyFi also comes with a visualization tool called [CyFi Explorer](https://cyfi.drivendata.org/explorer/). CyFi Explorer surfaces the corresponding Sentinel-2 imagery for each cyanobacteria estimate. The explorer runs a Gradio app locally on the user's machine and is intended to enable visual inspection of where the model is performing well, as well as edge cases or failure modes. It is not intended to replace more robust data analytics tools and decision-making workflows.
 
 :::{figure} cyfi_explorer.jpg
 :label: fig:cyfi_explorer
 :width: 700px
 Screenshot of CyFi Explorer, a visualization tool that surfaces the underlying satellite imagery used to generate the cyanobacteria estimate.
 :::
-
-Detailed instructions on using CyFi can be found in the [CyFi docs](https://cyfi.drivendata.org/).
 
 # Discussion
 
