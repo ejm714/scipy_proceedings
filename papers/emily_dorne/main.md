@@ -75,6 +75,8 @@ Labeled samples used in the Tick Tick Bloom competition colored by dataset provi
 
 The labels were divided into train and set sets, where train labels were provided to participants and test labels were used to evaluate model performance and kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage. Clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. [Sklearn's DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) was used to divide all data points into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
 
+- [ ] add DBSCAN cite
+
 Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA and WHO guidelines [@epa_guidelines; @who_guidelines].
 
 ```{list-table} Severity categories used in the Tick Tick Bloom competition
@@ -98,7 +100,7 @@ Predictions were evaluated using region-averaged root mean squared error. Averag
 
 ### Carrying foward competition models
 
-Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is a [repository of research code](https://github.com/drivendataorg/tick-tick-bloom) surfacing the most effective methods for a given task, including trained model weights and write-ups of winning methods.
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is a [an open-source github repository](https://github.com/drivendataorg/tick-tick-bloom) with research code surfacing the most effective methods for a given task, including trained model weights and write-ups of winning methods.
 
 However, transforming this research code into production code requires significant additional work. A gap between competition results and code that can be deployed exists for a few reasons:
 1. Competitions rely on static data exported and processed once. Deployment requires repeated, automatic use with new data.
@@ -387,7 +389,7 @@ All winners used Level-2 satellite imagery instead of Level-1, likely because it
 
 ### Model architecture
 
-All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. The model experimentation phase did not explore alternative model architectures given how clearly the competition surfaced the success of a gradient boosted tree model [@ttb_winners_announcement; @ttb_winners_repo].
+All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. The model experimentation phase did not explore alternative model architectures given how clearly the competition surfaced the success of a gradient boosted tree model [@ttb_winners_announcement].
 
 ## User interviews
 
