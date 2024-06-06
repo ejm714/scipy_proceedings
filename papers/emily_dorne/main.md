@@ -357,7 +357,7 @@ Below is a summary of which datasets were used by winners. We found that all win
 Data sources used by Tick Tick Bloom competition winners
 :::
 
-All three winners used gradient boosted decision tree models such as LightGBM, XGBoost, and CatBoost. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. In subsequent work, we did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model.
+All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining. In subsequent work, we did not experiment with various model architectures given that the Tick Tick Bloom competition clearly surfaced the success of a gradient boosted tree model.
 
 - [ ] TODO: add links to winners repo, winners write ups, winners announcement, results page
 
