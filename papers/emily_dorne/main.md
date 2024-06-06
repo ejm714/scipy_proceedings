@@ -494,7 +494,7 @@ A number of winners pointed out that upon inspection of satellite imagery, some 
 
 GPS coordinates are often recorded from a dock or parking lot near a sampling location. In these cases, the bounding box used to generate features would still pick up on relevant water-based characteristics. Filtering out samples that are far from any water body, and keeping points that are on land but *near* water pixels, is the best method to separate relevant data from incorrect coordinates.
 
-The distance between each sample and the nearest water body was calculated using the [European Space Agency (ESA) WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. The ESA water classification appeared to be more reliable than the Sentinel-2 scene classification (SCL) band based on visual review of samples.
+The distance between each sample and the nearest water body was calculated using the European Space Agency (ESA) [WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. The ESA water classification appeared to be more reliable than the Sentinel-2 scene classification (SCL) band based on visual review of samples.
 
 &#8594; *Takeaway:* Samples farther than 550m from a water body are excluded. This helps ensure that the relevant water body falls within the bounding box, so the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error.
 
