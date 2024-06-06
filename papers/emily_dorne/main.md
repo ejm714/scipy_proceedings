@@ -560,3 +560,5 @@ As states begin experimenting with CyFi, we recommend calculating historical est
 # Conclusion
 
 CyFi is a powerful tool for identifying high and low levels of cyanobacteria and enables humans to make more informed decisions when issuing public health guidances around current cyanobacteria levels. Areas with low density cyanobacteria counts can be excluded from ground sampling to better prioritize limited resources, while areas with high density cyanobacteria counts can be prioritized for public health action. The development of CyFi illustrates the utility of machine learning competitions as a first step toward open source tools. CyFi's primary use cases show how machine learning can be incorporated into human workflows to enable more efficient and more informed decision making.
+
+[^footnote-1]: @ttb_results
