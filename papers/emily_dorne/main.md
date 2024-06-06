@@ -71,6 +71,8 @@ In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cya
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
 
+The labels were divided into train and set sets, where train labels were provided to participants and test labels were used to evaluate model performance and kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage. Clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. [Sklearn's DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) was used to divide all data points into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
+
 Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA and WHO guidelines [@epa_guidelines; @who_guidelines].
 
 ```{list-table} Severity categories used in the Tick Tick Bloom competition
@@ -89,10 +91,6 @@ Participants predicted a severity category for a given sampling point as shown i
 * - 5
   - $\ge$10,000,000
 ```
-
-The competition dataset was split into train and set sets. Train data labels are provided to participants for model training. Test labels are used to evaluate model performance, and are kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage.
-
-Clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. Using [sklearn's DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html), all data points were divided into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
 
 Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
