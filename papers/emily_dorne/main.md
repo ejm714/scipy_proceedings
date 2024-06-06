@@ -127,12 +127,8 @@ Additional model testing was conducted to determine which winning approaches wer
 :::{figure} model_experimentation.png
 :label: fig:experiments
 :width: 100%
-Model experimentation summary
+Model experimentation summary, with final selections in bold.
 :::
-
-
-
-- [ ] TODO: revamp this table and add details for which features / bbox sizes / methods for water or cloud filtering / etc.
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions.
 
