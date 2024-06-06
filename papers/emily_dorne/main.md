@@ -181,26 +181,24 @@ CyFi was evaluated using 2,880 ground measurements from 12 data providers spanni
 Counts of cyanobacteria measurements by data provider in the evaluation set.
 :::
 
-- [ ] TODO: add justification for the below
-
-Categories used for the following evaluation:
+We use the following categories based on @who_guidelines for evaluation:
 - **Non-bloom:** Cyanobacteria density is less than 20,000 cells/mL
-- **Moderate bloom:** Cyanobacteria density is between 20,000 cells/mL and 100,000 cells/mL
+- **Bloom:** Cyanobacteria density is at least 20,000 cells/mL
 - **Severe bloom:** Cyanobacteria density is greater than 100,000 cells/mL
 
 On this evaluation dataset, CyFi detects 48% of **non-blooms** with 63% accuracy. Being able to detect places *not* likely to contain blooms enables ground sampling staff to de-prioritize low-risk sampled locations and better allocate limited resources.
 
-CyFi detects 81% of **moderate blooms** with 70% accuracy. Based on user interviews, moderate blooms are important to identify because they should be prioritized for sampling. There may be negative public health impacts and more precise toxin analysis is needed.
+CyFi detects 81% of **blooms** with 70% accuracy. Based on user interviews, moderate blooms are important to identify because they should be prioritized for sampling. There may be negative public health impacts and more precise toxin analysis is needed.
 
-Lastly, CyFi detect 53% of **severe bloom** cases with 71% accuracy. These locations pose the highest risk of severe negative health impacts, and are critical to flag for decision makers to prioritize for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery used by CyFi may be sufficient to issue an advisory without additional sampling. CyFi enables this step with its [CyFi Explorer](#cyfi-explorer) functionality.
+Lastly, CyFi detect 53% of **severe blooms** with 71% accuracy. These locations pose the highest risk of severe negative health impacts, and are critical to flag for decision makers to prioritize for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery used by CyFi may be sufficient to issue an advisory without additional sampling. CyFi enables this step with its [CyFi Explorer](#cyfi-explorer) functionality.
 
-Performance can vary based on bloom severity as well as location and other attributes, so the evaluation metrics above can vary significantly based on the distribution in the evaluation set.
+Model accuracy can vary based on bloom severity as well as location and other attributes of the sampling point, so the performance metrics above will vary based on the distribution in the evaluation set.
 
 ### Benchmark comparison
 
 An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery, CyAN's Cyanobacteria Index, is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
 
-Due to lower resolution of satellite imagery as well as missing data, **CyAN is only able to provide estimates for 30% of points in the evaluation set** described in @fig:eval_data. A major advantage of CyFi is coverage of small water bodies. Over half of the points in the evaluation set were identified as "land" in CyAN due to the coarse resolution of Sentinel-3 imagery. An additional 18% of points had "no data" likely due to clouds or bad imagery. CyAN produced an estimate for 30% (756) points in the evaluation set described in @fig:eval_data.
+Due to lower resolution of satellite imagery as well as missing data, **CyAN's Cyanobacteria Index is only able to provide estimates for 30% of points in the evaluation set** described in @fig:eval_data. A major advantage of CyFi is coverage of small water bodies. Over half of the points in the evaluation set were identified as "land" in CyAN due to the coarse resolution of Sentinel-3 imagery. An additional 18% of points had "no data" likely due to clouds or bad imagery. CyAN produced an estimate for 30% (756) points in the evaluation set.
 
 Among the portion of the evaluation set captured by CyAN, CyFi detects blooms with slightly higher accuracy. Using a cutoff of 10,000 cells/mL per @doi:10.1016/j.scitotenv.2021.145462, we find CyFi has a presence/absence accuracy of 72% compared to 66% for CyAN. The improved accuracy is largely due to a higher correct classification of true positive cases (blooms).
 
