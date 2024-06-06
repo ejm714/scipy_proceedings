@@ -439,7 +439,7 @@ The [model experimentation](#model-experimentation) phase combined the insights 
   </tr>
   <tr>
     <td>Use Sentinel-2 as the sole satellite source</td>
-    <td>Landsat data primarily only added value for time period period to 20XX, when Sentinel-2 was not available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. This decreased the dataset size by XX.</td>
+    <td>Landsat data primarily only added value for time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. This decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035.</td>
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
@@ -451,9 +451,6 @@ The [model experimentation](#model-experimentation) phase combined the insights 
   </tr>
 </table>
 :::
-
-- [ ] TODO: add decrease in size of dataset points by limiting to Sentinel-2
-
 
 ### Satellite feature engineering decisions
 
