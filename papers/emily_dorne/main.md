@@ -471,7 +471,7 @@ The [model experimentation](#model-experimentation) phase combined the insights 
   </tr>
   <tr>
     <td>Filter to water area and use a larger bounding box</td>
-    <td>Land pixels are filtered out because they are usually greener than water areas, and can generate falsely high cyanobacteria estimates. Sentinel-2's scene classification band is not 100% accurate, but is sufficient for masking non-water pixels. Since ground sampling points are often near land (taken from the shore or the dock), a larger bounding box (2,000m) is used to ensure the relevant water pixels are included.</td>
+    <td>Land pixels are filtered out because they are usually greener than water areas, and can generate falsely high cyanobacteria estimates. Sentinel-2's scene classification band is not perfectly accurate, but is sufficient for masking non-water pixels. Since ground sampling points are often near land (taken from the shore or the dock), a larger bounding box (2,000m) is used to ensure the relevant water pixels are included.</td>
   </tr>
   <tr>
     <td>Use a larger look-back window and filter to images with almost no clouds</td>
