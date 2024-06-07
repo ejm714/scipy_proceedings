@@ -98,7 +98,7 @@ Participants predicted a severity category for a given sampling point as shown i
 
 Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
-### Carrying foward competition models
+## Carrying foward competition models
 
 Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is an [open-source github repository](https://github.com/drivendataorg/tick-tick-bloom) with code from the most effective approaches, trained model weights, and write-ups of winning methods.
 
@@ -108,21 +108,13 @@ However, transforming this research code into production code requires significa
 3. Competition code is validated once with anticipated, clean data and static versions of Python package dependencies. In the real world things break and change; use requires basic robustness, testing and configurability.
 4. There is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
 
-An open-source Python package brings together these improvements to enable regularly generated predictions of cyanobacteria levels. To develop a package, we assessed model performance and efficiency opportunities, combined and iterated on the most useful pieces of the winning approaches into a single model, and simplified and restructured code to transform it into a runnable pipeline. The result is CyFi, a configurable code package capable of generating cyanobacteria predictions on new input data. CyFi is a clean, reproducible repository that incorporates open source best practices, including tests and continuous integration, and is ready for integration into state-level dashboards and decision-making processes.
+While the end goal is regularly generated predictions of cyanobacteria levels surfaced in user-friendly dashboards to water quality managers, the intermediate requirement is a deployment-ready code package. This package is CyFi, a configurable, open-source Python library capable of generating cyanobacteria predictions on new input data.
 
-- [ ] TODO: move this sentence below & paragraph above
+### Model experimentation
 
-The following sections describe in detail how user interviews and model experimentation informed the final package.
+CyFi was developed through an additional model experimentation phase, which combined and iterated on the most useful pieces from competition-winning models, and simplified and restructured code to transform it into a runnable pipeline. Additional model testing helped determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting. 
 
-## User interviews
-
-We conducted human-centered design interviews with subject matter experts and end users to design a package that optimally addresses on-the-ground user needs. Interviewees included representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected because they present a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints.
-
-@tbl:interview_takeaways summarizes the core design decisions for CyFi that were rooted in insights from user interviews.
-
-## Model experimentation
-
-Additional model testing was conducted to determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting. The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and which target variable was used.
+The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and which target variable was used.
 
 :::{figure} model_experimentation.png
 :label: fig:experiments
@@ -131,6 +123,10 @@ Model experimentation summary, with final selections in bold.
 :::
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
+
+### User interviews
+
+ To design a package that optimally addresses on-the-ground user needs, we conducted human-centered design interviews with subject matter experts and end users. Interviewees included representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected because they present a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints. @tbl:interview_takeaways summarizes the core design decisions for CyFi that were rooted in insights from user interviews.
 
 # Results
 
@@ -256,7 +252,7 @@ Technical experimentation alone is insufficient in building a tool that aims to 
 
 ## CyFi
 
-The culmination of the machine learning competition, subsequent model experimentation, and user interviews is CyFi. CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels, one type of HAB. CyFi can help decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily.
+The culmination of the machine learning competition, subsequent model experimentation, and user interviews is CyFi. CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels, one type of HAB. CyFi can help decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi incorporates open-source best practices, including tests and continuous integration, and is ready for integration into state-level dashboards and decision-making processes.
 
 ### Data sources
 
@@ -493,7 +489,9 @@ CyFi's progression from a machine learning competition that surfaced promising a
 
 ## Use cases
 
-Due to the current accuracy of the current CyFi model, we believe CyFi should be used to inform human workflows but should not be used to trigger automatic actions. CyFi works best as an enhancement to existing decision-making processes, through its ability to surface high and low priority areas. Based on discussions with end users, a few common use cases for CyFi are as follows. Overall, CyFi supports more widespread and timely public health actions, better allocation of ground sampling resources, and more informed impairment and regulatory monitoring.
+CyFi works best as an enhancement to existing decision-making processes through its ability to surface high and low priority areas. At its current accuracy level, we believe CyFi should be used to inform human workflows rather than triggering automatic actions.
+
+Based on discussions with end users, a few common use cases for CyFi are listed below. Overall, CyFi supports more widespread and timely public health actions, better allocation of ground sampling resources, and more informed impairment and regulatory monitoring.
 
 1) Flag high severity blooms for public health action
 
