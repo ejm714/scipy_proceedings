@@ -357,7 +357,7 @@ Among the portion of the evaluation set captured by CyAN, CyFi detects blooms wi
 :::{figure} cyan_comparison.png
 :label: fig:cyan_comparison
 :width: 350px
-A comparison of CyFi and CyAN model accuracy on 756 ground sampled data points from across the U.S. A true positive (bloom presence) is where cyanobacteria density > 10,000 cells/mL.
+A comparison of CyFi and CyAN model accuracy on 756 ground sampled data points from across the U.S. A true positive (bloom presence) is where cyanobacteria density > 10,000 cells/mL. CyFi correctly identified 306 of 389 blooms, while CyAN correctly identified 169 (true positives). CyFi correctly identified 241 of 367 non-blooms, while CyAN correctly identified 332 (true negatives).
 :::
 
 In sum, we find that CyFi performs at least as well as a leading Sentinel-3 based tool, but has 10 times the coverage of water bodies across the U.S. due to the higher resolution of Sentinel-2 data. This dramatically expands the applicability of remote sensing-based estimates as a tool for management of HABs.
