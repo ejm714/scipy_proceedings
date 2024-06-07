@@ -141,9 +141,9 @@ The competition showed that Sentinel-2 contains sufficient information for gener
 Data sources used by Tick Tick Bloom competition winners
 :::
 
-All winners used Level-2 satellite imagery instead of Level-1, likely because it already includes useful atmospheric corrections. Sentinel-2 data is higher resolution than Landsat, and provided to be more useful in modeling.
+All winners used Level-2 satellite imagery instead of Level-1, likely because it already includes useful atmospheric corrections. Sentinel-2 data is higher resolution than Landsat, and proved to be more useful in modeling.
 
-All winners also used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining.
+All winners also used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining.
 
 ## Model experimentation takeaways
 
