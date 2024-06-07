@@ -1,5 +1,4 @@
 ---
-# Ensure that this title is the same as the one in `myst.yml`
 title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
