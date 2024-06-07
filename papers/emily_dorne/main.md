@@ -188,11 +188,12 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th rowspan="2">Sentinel-2 features</th>
-    <th colspan="3">Individual band statistics</th>
-    <th colspan="3">Multiple-band features</th>
+    <th colspan="2">Individual band</th>
+    <th colspan="2">Multiple band</th>
+    <th colspan="2">Metadata</th>
   </tr>
   <tr>
-    <td colspan="3">
+    <td colspan="2">
       <ul>
         <li>**Mean</li>
         <li>Min</li>
@@ -202,13 +203,17 @@ The table below summarizes the matrix of experiments that were conducted. Model 
         <li>**Percent water</li>
       </ul>
     </td>
-    <td colspan="3">
+    <td colspan="2">
       <ul>
         <li>**Blue/red ratio</li>
         <li>**Blue/green ratio</li>
-        <li>**NDVI: visible red combined with three different red edge bands</li>
+        <li>**NDVI: visible red combined with three red edge bands</li>
       </ul>
     </td>
+    <td colspan="2"><ul>
+    <li>**Month</li>
+    <li>**Days before sampling</li>
+    </ul></td>
   </tr>
   <tr>
     <th>Additional data sources beyond Sentinel-2</th>
