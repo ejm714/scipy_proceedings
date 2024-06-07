@@ -16,6 +16,7 @@ project:
         - Supervision
         - Visualization
         - Writing - original draft
+      corresponding: true
     - name: Katie Wetstone
       email: katie@drivendata.org
       affiliations:
