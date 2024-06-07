@@ -100,10 +100,10 @@ Predictions were evaluated using region-averaged root mean squared error. Averag
 
 ### Carrying foward competition models
 
-Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is a [an open-source github repository](https://github.com/drivendataorg/tick-tick-bloom) with research code surfacing the most effective methods for a given task, including trained model weights and write-ups of winning methods.
+Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is an [open-source github repository](https://github.com/drivendataorg/tick-tick-bloom) with code from the most effective approaches, trained model weights, and write-ups of winning methods.
 
 However, transforming this research code into production code requires significant additional work. This gap between competition-winning research approaches and deployable code exists for a few reasons:
-1. The competition relies on static data exported and processed once. Deployment requires repeated, automatic use with new data.
+1. The competition relies on static data exported and processed once while deployment requires repeated, automatic use with new data.
 2. Winning models are relatively unconstrained by the size and cost of their solutions. For ongoing use, efficiency matters.
 3. Competition code is validated once with anticipated, clean data and static versions of Python package dependencies. In the real world things break and change; use requires basic robustness, testing and configurability.
 4. There is substantial variability in the clarity and organization of competition-winning code. Usable code requires others to be able to understand, maintain, and build on the codebase.
