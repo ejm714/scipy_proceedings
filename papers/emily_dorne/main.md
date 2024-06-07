@@ -3,15 +3,12 @@ title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
 
-  A short version of the long version that is way too long to be written as a
-  short version anyway.  Still, when considering the facts from first
-  principles, we find that the outcomes of this introspective approach is
-  compatible with the guidelines previously established.
-
-  In such an experiment it is then clear that the potential for further
-  development not only depends on previous relationships found but also on
-  connections made during exploitation of this novel new experimental
-  protocol.
+  Harmful algal blooms (HABs) pose major health risks to human and aquatic life. Methods exist to automatically detect large, slow-moving HABs in the ocean, but fall short for smaller, more dynamic blooms in critical inland water bodies like lakes, reservoirs, and rivers. This paper describes the development of CyFi, an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria. CyFi addresses gaps in inland detection by incorporating higher-resolution Sentinel-2 satellite data, a computationally efficient tree-based model, and image visualization functionality.
+  
+  CyFi was developed in three phases:
+  1. A **machine learning competition** used crowd-sourcing to surface the most effective data sources, feature generation methods, and model architectures for modeling cyanobacteria
+  2. **User interviews** with water quality managers provided insight into how automatic detection could integrate with on-the-ground decision-making workflows
+  3. **Model experimentation** identified the best winning methods to support a single, robust, generalizable cyanobacteria model, and made that model available through a user-friendly, reproducible, well-documented repository.
 ---
 
 - [ ] TODO: write abstract
@@ -48,13 +45,13 @@ Despite the severe consequences of HABs, existing monitoring tools and methods a
 
 Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 [@doi:10.3390/rs13214347]. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers.
 
-:::{figure} 10m.png
+:::{figure} resolution_sentinel_2.png
 :label: fig:10m
 :width: 500px
 An example of a water body at 10m resolution
 :::
 
-:::{figure} 30m.png
+:::{figure} resolution_sentinel_3.png
 :label: fig:30m
 :width: 500px
 An example of the @fig:10m image at 30m resolution
@@ -136,9 +133,42 @@ The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Chal
 
 The competition showed that Sentinel-2 contains sufficient information for generating accurate cyanobacteria estimates. Below is a summary of which datasets were used by winners.
 
-:::{figure} ttb_winner_sources.png
-:label: fig:ttb_winner_sources
-Data sources used by Tick Tick Bloom competition winners
+:::{table} Data sources used by Tick Tick Bloom competition winners
+:label: tbl:winner-data-sources
+<table>
+    <tr>
+        <th></th>
+        <th style="background-color: #e0f7e9; padding-left: 16px; padding-right: 16px;"><b>Landsat</b><br><i>Satellite</i></th>
+        <th style="background-color: #e0f7e9; padding-left: 16px; padding-right: 16px;"><b>Sentinel 2</b><br><i>Satellite</i></th>
+        <th style="background-color: #fef4e0; padding-left: 16px; padding-right: 16px;"><b>HRRR</b><br><i>Climate data</i></th>
+        <th style="background-color: #ede0f7; padding-left: 16px; padding-right: 16px;"><b>Copernicus DEM</b><br><i>Elevation</i></th>
+        <th style="background-color: #f7f7f7; padding-left: 16px; padding-right: 16px;"><b>Metadata</b><br><i>Time, location</i></th>
+    </tr>
+    <tr>
+        <td>1st Place</td>
+        <td></td>
+        <td>✔<br><small>Color value statistics</small></td>
+        <td>✔<br><small>Temperature</small></td>
+        <td></td>
+        <td>✔<br><small>Region Location</small></td>
+    </tr>
+    <tr>
+        <td>2nd Place</td>
+        <td></td>
+        <td>✔<br><small>Color value statistics</small></td>
+        <td></td>
+        <td>✔</td>
+        <td>✔<br><small>Clustered location</small></td>
+    </tr>
+    <tr>
+        <td>3rd Place</td>
+        <td>✔<br><small>Color value statistics</small></td>
+        <td>✔<br><small>Color value statistics</small></td>
+        <td>✔<br><small>Temperature<br>Humidity</small></td>
+        <td></td>
+        <td>✔<br><small>Longitude</small></td>
+    </tr>
+</table>
 :::
 
 All winners used Level-2 satellite imagery instead of Level-1, likely because it already includes useful atmospheric corrections. Sentinel-2 data is higher resolution than Landsat, and proved to be more useful in modeling.
