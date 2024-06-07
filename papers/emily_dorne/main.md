@@ -505,9 +505,9 @@ Identifying water bodies that are *not* experiencing blooms can be just as helpf
 
 Multiple states rely on visual inspection of a submitted photo to confirm a bloom. CyFi can both generate a cyanobacteria density estimate and show the most recent, cloud free 10m satellite imagery for that location.
 
-4) Provide a birds-eye view of conditions in lakes across the state
+4) Provide a birds-eye view of lake conditions across the state
 
-- [ ] TODO: fill in based on NY case
+Many states track [impaired and threatened waters](https://www.epa.gov/tmdl) in accordance with the Clean Water Act and develop total maximum daily loads (TMDLs), which specify the maxmimum amount of pollutant allowed to enter a water body. Routine predictions from CyFi can help monitor the progression in water bodies where cyanobacteria is a primary concern.
 
 ## Future directions
 
