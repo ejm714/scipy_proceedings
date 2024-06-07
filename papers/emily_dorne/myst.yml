@@ -25,6 +25,10 @@ project:
         - Software
         - Visualization
         - Writing - review & editing
+    - name: Trista Brophy
+      email: brophy.trista@gmail.com
+      roles:
+        - Writing - original draft
     - name: Shobhana Gupta
       email: shobhana.gupta@nasa.gov
       affiliations:
@@ -32,10 +36,6 @@ project:
       roles:
         - Project administration
         - Conceptualization
-    - name: Trista Brophy
-      email: brophy.trista@gmail.com
-      roles:
-        - Writing - original draft
   keywords:
     - Cyanobacteria
     - Sentinel-2
