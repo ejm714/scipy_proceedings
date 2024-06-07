@@ -28,7 +28,7 @@ CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses
 - A straightforward command line interface
 - A unique training dataset of almost 13,000 data points across the continental U.S.
 
-This paper presents a detailed examination of the development of CyFi, from its origins in a machine learning competition to an open source package. The methods section explores the setup of the prize competition, the subsequent model experimentation phase that built on winning approaches, and the end user interviews that helped shape CyFi with real-world context. The results section outlines CyFi's underlying methodology, core capabilities, and model performance. Finally, the discussion secti on concludes with insights on machine learning methods that proved effective for detecting inland HABs, along with broader implications for how machine learning can augment human decision making workflows to protect public health.
+This paper presents a detailed examination of the development of CyFi, from its origins in a machine learning competition to an open source package. The methods section explores the setup of the prize competition, the subsequent model experimentation phase that built on winning approaches, and the end user interviews that helped shape CyFi with real-world context. The results section provides insights on the machine learning methods that proved most effective for detecting inland HABs, and details CyFi's underlying methodology, core capabilities, and model performance. Finally, the discussion section reflects the primary ways CyFi can augment human decision making workflows to protect public health and notes areas for future research.
 
 # Motivation
 
