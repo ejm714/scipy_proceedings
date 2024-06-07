@@ -212,7 +212,6 @@ A comparison of CyFi and CyAN model accuracy on 756 ground sampled data points f
 
 In sum, we find that CyFi performs at least as well as a leading Sentinel-3 based tool, but has 10 times the coverage of water bodies across the U.S. due to the higher resolution of Sentinel-2 data. This dramatically expands the applicability of remote sensing-based estimates as a tool for management of HABs.
 
-
 ## Using CyFi
 
 Comprehensive instructions for using CyFi can be found in the [CyFi docs](https://cyfi.drivendata.org/). The below provides an overview of some of CyFi's key functionality.
