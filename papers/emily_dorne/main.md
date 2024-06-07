@@ -18,7 +18,7 @@ abstract: |
 
 # Introduction
 
-Inland water bodies provide a variety of critical services for both human and aquatic life, including drinking water, recreational and economic opportunities, and marine habitats. Harmful algal blooms (HABs) pose a significant risk to these inland bodies, producing toxins that are poisonous to humans and their pets and threatening marine ecosystems by blocking sunlight and oxygen. Such threats require water quality managers to monitor for the presence of HABs, and to make urgent decisions around public health warnings and closures when they are detected.
+Inland water bodies provide a variety of critical services for both human and aquatic life, including drinking water, recreational and economic opportunities, and marine habitats. Harmful algal blooms (HABs) pose a significant risk to these inland bodies, producing toxins that are poisonous to humans and their pets and threatening marine ecosystems by blocking sunlight and oxygen. Such threats require water quality managers to monitor for the presence of HABs and to make urgent decisions around public health warnings and closures when they are detected.
 
 The most common source of HABs in freshwater environments is cyanobacteria, or blue-green algae. While there are established methods for using satellite imagery to detect cyanobacteria in larger water bodies like oceans, detection in small inland lakes, reservoirs, and rivers remains a challenge. Manual water sampling is accurate, but is too time and resource intensive to perform continuously at scale. Machine learning models, on the other hand, can generate estimates in seconds. Automatic detection enables water managers to better prioritize limited manual sampling resources and can provide a birds-eye view of water conditions across a region. Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible in free, routinely collected satellite imagery.
 
@@ -26,7 +26,7 @@ CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses
 - Features derived from high-resolution Sentinel-2 satellite data
 - A fast and computationally efficient boosted tree machine learning algorithm
 - A straightforward command line interface
-- A unique training dataset of almost 13,000 reliable, manually analyzed data points across the continental U.S.
+- A unique training dataset of almost 13,000 cyanobacteria ground measurements across the continental U.S.
 
 This paper presents a detailed examination of the development of CyFi, from its origins in a machine learning competition to an open source package. The methods section explores the setup of the prize competition, the subsequent model experimentation phase that built on winning approaches, and the end user interviews that helped shape CyFi with real-world context. The results section provides insights on the machine learning methods that proved most effective for detecting inland HABs, and details CyFi's underlying methodology, core capabilities, and model performance. Finally, the discussion section reflects the primary ways CyFi can augment human decision making workflows to protect public health and notes areas for future research.
 
@@ -68,7 +68,7 @@ Effectively monitoring inland HABs and protecting public health requires develop
 
 The machine learning approach in CyFi was originally developed as part of the Tick Tick Bloom: Harmful Algal Detection Challenge, which ran from December 2022 to February 2023 [@ttb_results]. Machine learning competition can harness the power of community-driven innovation and rapidly test a wide variety of possible data sources, model architectures, and features. Tick Tick Bloom was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
-In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in situ cyanobacteria measurements is publicly available through the SeaBASS data archive [@seabass]. Each sample in the dataset is a unique combination of date, latitude, and longitude.
+In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in situ cyanobacteria measurements is publicly available through the SeaBASS data archive [@seabass]. Each observation in the dataset is a unique combination of date, latitude, and longitude.
 
 :::{figure} ttb_datasets.png
 :label: fig:ttb_datasets
@@ -168,11 +168,11 @@ The [model experimentation](#model-experimentation) phase did not explore altern
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
-    <td>Similarly, climate and elevation features primarily provided value for data points prior to the launch of Sentinel-2 and so are not used in the final CyFi model. Climate and elevation likely do have an impact on how cyanobacteria blooms form, and more sophisticated feature engineering with these data sources may add value in the future. This is a direction for <a href="#future-directions">future research</a>.</td>
+    <td>Climate and elevation features primarily provided value for data points prior to the launch of Sentinel-2 and so are not used in the final CyFi model. Climate and elevation likely do have an impact on how cyanobacteria blooms form, and more sophisticated feature engineering with these data sources may add value in the future. This is a direction for <a href="#future-directions">future research</a>.</td>
   </tr>
   <tr>
     <td>Incorporate land cover</td>
-    <td>Lastly, including a land cover map, even at a coarse 300m resolution, added to model accuracy. The land cover map likely captures farmland areas with fertilizer runoff that contributes to blooms. A static map from 2020 is used rather than a real-time satellite-derived product, as this reduces the compute time and patterns in land use do not fluctuate daily. Land cover is also an effective balance between reflecting regional characteristics, and avoiding overfitting to the small number data providers in the training set (see below for additional details).</td>
+    <td>Including a land cover map, even at a coarse 300m resolution, added to model accuracy. The land cover map likely captures farmland areas with fertilizer runoff that contributes to blooms. A static map from 2020 is used rather than a real-time satellite-derived product, as this reduces the compute time and patterns in land use do not fluctuate daily. Land cover is also an effective balance between reflecting regional characteristics, and avoiding overfitting to the small number data providers in the training set.</td>
   </tr>
 </table>
 :::
