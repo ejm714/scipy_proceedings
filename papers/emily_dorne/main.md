@@ -1,6 +1,6 @@
 ---
 # Ensure that this title is the same as the one in `myst.yml`
-title: Using Satellite Imagery to Identify Harmful Algal Blooms and Protect Public Health
+title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
   A short version of the long version that is way too long to be written as a
