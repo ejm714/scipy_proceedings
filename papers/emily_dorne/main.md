@@ -3,15 +3,13 @@ title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
 
-  Harmful algal blooms (HABs) pose major health risks to human and aquatic life. Methods exist to automatically detect large, slow-moving HABs in the ocean, but fall short for smaller, more dynamic blooms in critical inland water bodies like lakes, reservoirs, and rivers. This paper describes the development of CyFi, an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria. CyFi addresses gaps in inland detection by incorporating higher-resolution Sentinel-2 satellite data, a computationally efficient tree-based model, and image visualization functionality.
+  Harmful algal blooms (HABs) pose major health risks to human and aquatic life. Remote sensensing-based methods exist to automatically detect large, slow-moving HABs in the ocean, but fall short for smaller, more dynamic blooms in critical inland water bodies like lakes, reservoirs, and rivers.
   
-  CyFi was developed in three phases:
-  1. A **machine learning competition** used crowd-sourcing to surface the most effective data sources, feature generation methods, and model architectures for modeling cyanobacteria
-  2. **User interviews** with water quality managers provided insight into how automatic detection could integrate with on-the-ground decision-making workflows
-  3. **Model experimentation** identified the best winning methods to support a single, robust, generalizable cyanobacteria model, and made that model available through a user-friendly, reproducible, well-documented repository.
----
+  CyFi is an open-source Python package that enables detection of cyanobacteria in inland water bodies using 10-30m Sentinel-2 imagery and a computationally efficient tree-based machine learning model. CyFi enables water quality and public health managers to conduct high level assessments of water bodies of interest and identify regions in which to target monitoring and responsive actions to protect public health. 
+  
+  CyFi was developed in three phases. A machine learning competition leveraged the diverse skills and creativity of data science experts to surface promising approaches for cyanobacteria detection from remote sensed data. Subsequent user interviews and model iteration resulted in a deployment-ready open-source package designed to meet user workflow needs and decision-making priorities. This process illustrates a replicable pathway for developing powerful machine learning tools in domain-specific areas.
 
-- [ ] TODO: write abstract
+---
 
 # Introduction
 
@@ -19,7 +17,9 @@ Inland water bodies provide a variety of critical services for both human and aq
 
 The most common source of HABs in freshwater environments is cyanobacteria, or blue-green algae. While there are established methods for using satellite imagery to detect cyanobacteria in larger water bodies like oceans, detection in small inland lakes, reservoirs, and rivers remains a challenge. Manual water sampling is accurate, but is too time and resource intensive to perform continuously at scale. Machine learning models, on the other hand, can generate estimates in seconds. Automatic detection enables water managers to better prioritize limited manual sampling resources and can provide a birds-eye view of water conditions across a region. Machine learning is particularly well-suited to this task because indicators of cyanobacteria are visible in free, routinely collected satellite imagery.
 
-CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels [@cyfi_docs]. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher-resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. Key strengths of CyFi compared to other tools include:
+- [ ] TODO: SG edit
+
+We present CyFi, short for Cyanobacteria Finder, an open-source Python package that uses satellite imagery and machine learning to estimate cyanobacteria levels in inland water bodies [@cyfi_docs]. CyFi helps decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily. CyFi represents a significant advancement in environmental monitoring, providing higher-resolution detection capabilities that can pinpoint areas at risk of cyanobacterial contamination. Key strengths of CyFi compared to other tools include:
 - Features derived from high-resolution Sentinel-2 satellite data
 - A fast and computationally efficient boosted tree machine learning algorithm
 - A straightforward command line interface
@@ -63,7 +63,7 @@ Effectively monitoring inland HABs and protecting public health requires develop
 
 ## Machine learning competition
 
-The machine learning approach in CyFi was originally developed as part of the Tick Tick Bloom: Harmful Algal Detection Challenge, which ran from December 2022 to February 2023 [@ttb_results]. Machine learning competition can harness the power of community-driven innovation and rapidly test a wide variety of possible data sources, model architectures, and features. Tick Tick Bloom was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
+The machine learning approach in CyFi was originally developed as part of the Tick Tick Bloom: Harmful Algal Detection Challenge, which ran from December 2022 to February 2023 [@ttb_results]. Machine learning competition can harness the power of community-driven innovation and rapidly test a wide variety of possible data sources, model architectures, and features [@doi:10.48550/arXiv.1606.07781; @doi:10.1093/rasti/rzae009; @doi:10.1073/pnas.2011362118]. Tick Tick Bloom was created by DrivenData on behalf of NASA and in collaboration with NOAA, the U.S. Environmental Protection Agency, the U.S. Geological Survey, the U.S. Department of Defense Defense Innovation Unit, Berkeley AI Research, and Microsoft AI for Earth.
 
 In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cyanobacteria blooms in small, inland water bodies using publicly available [satellite](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#satellite-imagery), [climate](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#climate-data), and [elevation](https://www.drivendata.org/competitions/143/tick-tick-bloom/page/650/#elevation-data) data. Models were trained and evaluated using a set of manually collected water samples that had been analyzed for cyanobacteria density. Labels were sourced from 14 data providers across the U.S., shown in @fig:ttb_datasets. The full dataset containing 23,570 in situ cyanobacteria measurements is publicly available through the SeaBASS data archive [@seabass]. Each observation in the dataset is a unique combination of date, latitude, and longitude.
 
@@ -123,7 +123,7 @@ During experimentation, the model was trained on roughly 13,000 samples and eval
 
 ### User interviews
 
-To design a package that optimally addresses on-the-ground user needs, we conducted human-centered design (HCD) interviews with subject matter experts and end users. Interviewees included representatives from California, New York, Georgia, Louisiana, Florida, and Michigan. These states were selected because they present a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints. @tbl:interview_takeaways summarizes the core design decisions for CyFi that were rooted in insights from user interviews.
+To design a package that optimally addresses on-the-ground user needs, we conducted human-centered design (HCD) interviews with subject matter experts and end users. Interviewees included water quality and public health experts from California, New York, Georgia, Louisiana, Florida, and Michigan. Representatives from these states were selected to understand workflows and priorities, and capture a diversity of geographic locations, number of water bodies in the region, HAB severity, investment in HABs monitoring, and technical sophistication of current approaches. User interviews focused on understanding current water quality decision-making processes, including the data and tools used to support those decisions. Learnings were used to inform the format for surfacing predictions, priorities in model performance, and computational constraints. @tbl:interview_takeaways summarizes the core design decisions for CyFi that were rooted in insights from user interviews.
 
 # Results
 
