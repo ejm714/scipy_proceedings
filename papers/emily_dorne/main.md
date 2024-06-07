@@ -3,6 +3,7 @@
 title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
+
   A short version of the long version that is way too long to be written as a
   short version anyway.  Still, when considering the facts from first
   principles, we find that the outcomes of this introspective approach is
@@ -98,7 +99,7 @@ Participants predicted a severity category for a given sampling point as shown i
 
 Predictions were evaluated using region-averaged root mean squared error. Averaging across regions incentivized models to perform well across the continental U.S., rather than in certain states that were over-represented in the competition dataset (such as California and North Carolina). Over 900 submissions across 115 teams were made over the course of the competition.
 
-## Carrying foward competition models
+## Carrying forward competition models
 
 Machine learning competitions are excellent for crowd-sourcing top approaches to complex predictive modeling problems. Over a short period of time, a large community of solvers tests a broad feature space including possible data sources, model architectures, and model features. The result is an [open-source github repository](https://github.com/drivendataorg/tick-tick-bloom) with code from the most effective approaches, trained model weights, and write-ups of winning methods.
 
@@ -507,7 +508,7 @@ Multiple states rely on visual inspection of a submitted photo to confirm a bloo
 
 4) Provide a birds-eye view of lake conditions across the state
 
-Many states track [impaired and threatened waters](https://www.epa.gov/tmdl) in accordance with the Clean Water Act and develop total maximum daily loads (TMDLs), which specify the maxmimum amount of pollutant allowed to enter a water body. Routine predictions from CyFi can help monitor the progression in water bodies where cyanobacteria is a primary concern.
+Many states track [impaired and threatened waters](https://www.epa.gov/tmdl) in accordance with the Clean Water Act and develop total maximum daily loads (TMDLs), which specify the maximum amount of pollutant allowed to enter a water body. Routine predictions from CyFi can help monitor the progression in water bodies where cyanobacteria is a primary concern.
 
 ## Future directions
 
