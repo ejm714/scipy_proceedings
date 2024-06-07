@@ -38,11 +38,11 @@ project:
       roles:
         - Writing - original draft
   keywords:
-    - cyanobacteria
+    - Cyanobacteria
     - Sentinel-2
-    - machine learning
-    - harmful algal blooms
-    - remote sensing
+    - Machine Learning
+    - Harmful Algal Blooms
+    - Remote Sensing
   abbreviations:
     CyFi: Cyanobacteria Finder
     HAB: harmful algal bloom
