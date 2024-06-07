@@ -118,21 +118,21 @@ The table below summarizes the matrix of experiments that were conducted. Model 
 <table>
   <tr>
     <th>Training data points filter</th>
-    <td colspan="2"><ul><li>No filter</li>
+    <td colspan="6"><ul><li>No filter</li>
     <li>**Points within 550 meters of water</li>
     <li>Points within 1,000m of water</li>
     </ul></td>
   </tr>
   <tr>
     <th rowspan="2">Sentinel-2 image query</th>
-    <th>Time window</th>
-    <th>Bounding box around sample</th>
+    <th colspan="3">Time window</th>
+    <th colspan="3">Bounding box around sample</th>
   <tr>
-    <td><ul><li>15 days</li>
+    <td colspan="3"><ul><li>15 days</li>
     <li>**30 days</li>
     <li>60 days</li>
     </ul></td>
-    <td><ul><li>200m</li>
+    <td colspan="3"><ul><li>200m</li>
     <li>500m</li>
     <li>1,000m</li>
     <li>**2,000m</li>
@@ -140,37 +140,37 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th rowspan="2">Sentinel-2 image selection</th>
-    <th>Cloud filter</th>
-    <th>Missing data filter</th>
-    <th>Images per sample</th>
+    <th colspan="2">Cloud filter</th>
+    <th colspan="2">Missing data filter</th>
+    <th colspan="2">Images per sample</th>
   </tr>
   <tr>
-    <td><ul><li>None</li>
+    <td colspan="2"><ul><li>None</li>
       <li>**<5%</li>
       </ul>
     </td>
-    <td><ul><li>**None</li>
+    <td colspan="2"><ul><li>**None</li>
       <li><1%</li>
       </ul>
     </td>
-    <td><ul><li>**1</li>
+    <td colspan="2"><ul><li>**1</li>
       <li>Up to 15</li>
       </ul>
     </td>
   </tr>
   <tr>
     <th rowspan="2">Sentinel-2 pixels used to generate features</th>
-    <th>Bounding box around sample point</th>
-    <th>Pixel filtering</th>
+    <th colspan="3">Bounding box around sample point</th>
+    <th colspan="3">Pixel filtering</th>
   </tr>
   <tr>
-    <td><ul>
+    <td colspan="3"><ul>
       <li>100m</li>
       <li>200m</li>
       <li>**2,000m</li>
     </ul>
   </li></td>
-    <td>
+    <td colspan="3">
     <ul>
       <li>None</li>
       <li>**Water pixels based on Sentinel-2 SCL band</li>
@@ -179,7 +179,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th>Sentinel-2 bands used</th>
-    <td colspan="2">
+    <td colspan="6">
       <ul>
         <li>Visible only</li>
         <li>**Visible, aerosols, red edge, near infrared, water vapor, shortwave infrared, scene classification</li>
@@ -188,11 +188,11 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th rowspan="2">Sentinel-2 features</th>
-    <th>Individual band statistics</th>
-    <th>Multiple-band features</th>
+    <th colspan="3">Individual band statistics</th>
+    <th colspan="3">Multiple-band features</th>
   </tr>
   <tr>
-    <td>
+    <td colspan="3">
       <ul>
         <li>**Mean</li>
         <li>Min</li>
@@ -202,7 +202,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
         <li>**Percent water</li>
       </ul>
     </td>
-    <td>
+    <td colspan="3">
       <ul>
         <li>**Blue/red ratio</li>
         <li>**Blue/green ratio</li>
@@ -212,7 +212,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th>Additional data sources beyond Sentinel-2</th>
-    <td colspan="2"><ul>
+    <td colspan="6"><ul>
       <li>Landsat imagery</li>
       <li>HRRR climate (temperature, humidity)</li>
       <li>Copernicus Digital Elevation Model</li>
@@ -224,7 +224,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
   </tr>
   <tr>
     <th>Predicted target variable</th>
-    <td colspan="2"><ul>
+    <td colspan="6"><ul>
     <li>WHO severity category</li>
     <li>Exact density (cells / mL)</li>
     <li>**Log of exact density</li>
