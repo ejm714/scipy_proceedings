@@ -142,6 +142,8 @@ The distance between each sample and the nearest water body was calculated using
 
 # Results
 
+## Competition takeaways
+
 The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) was to identify the most useful data sources, features, and modeling methods for cyanobacteria estimation in small, inland water bodies. There was particular interest around the use of Sentinel-2 data, which is has significantly higher resolution than Sentinel-3 and is more suited to smaller water bodies. However, Sentinel-2 does not contain sensors that can spectrophotometrically measure chlorophyll, which is how most Sentinel-3-based cyanobacteria estimates are derived.
 
 The competition showed that Sentinel-2 contains sufficient information for generating accurate cyanobacteria estimates. Below is a summary of which datasets were used by winners.
@@ -154,6 +156,8 @@ Data sources used by Tick Tick Bloom competition winners
 All winners used Level-2 satellite imagery instead of Level-1, likely because it already includes useful atmospheric corrections. Sentinel-2 data is higher resolution than Landsat, and provided to be more useful in modeling.
 
 All three winners used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place also explored training a CNN model but found the coarse resolution of the satellite imagery (particularly Landsat) overly constraining.
+
+## Model experimentation takeaways
 
 The [model experimentation](#model-experimentation) phase did not explore alternate model architectures given how clearly the competition surfaced the success of a gradient boosted tree model [@ttb_winners_announcement]. It did however contain extensive iterations on other parts of the pipeline. Over 30 configurations were tested to identify the optimal setup for training a robust, generalizable model. Below are the core decisions that resulted from model experimentation and retraining.
 
@@ -229,6 +233,10 @@ The [model experimentation](#model-experimentation) phase did not explore altern
 </table>
 :::
 
+One of the risks in a machine learning competition is overfitting to the test set. Competition models may pick up on patterns specific to the competition data, rather than patterns of environmental cyanobacteria conditions that hold outside of the competition. The experimentation phase was additionally useful in identifying and removing competition artifacts that would hamper the generalizability of the model in an open source package. For exmaple, all winning solutions used a "longitude" feature in their solutions, which captured some underlying differences in sampling procedures by the 14 data providers for the competition. For example, California only samples cyanobacteria density for suspected blooms, leading to an over-representation of high density samples among competition data points within California. Predicting high severity for all values in California improves competition performance, but would not hold in the real world. As a result, geographic features like longitude, state, and region were not used for deployment-ready CyFi model.
+
+## User interview takeaways
+
 Technical experimentation alone is insufficient in building a tool that aims to address a real-world problem. Understanding user needs and workflows help enable integration with existing workflows and increases the likelihood of adoption. The table below synthesizes key insights gleaned from [user interviews](#user-interviews), and outlines how each insight supported the development of a user-friendly package.
 
 ```{list-table} CyFi design decisions rooted in HCD interviews
@@ -250,7 +258,7 @@ Technical experimentation alone is insufficient in building a tool that aims to 
 
 ## CyFi
 
-The culmination of the machine learning competition, user interviews, and model experimentation phase is CyFi. CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels, one type of HAB. CyFi can help decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily.
+The culmination of the machine learning competition, subsequent model experimentation, and user interviews is CyFi. CyFi, short for Cyanobacteria Finder, is an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria levels, one type of HAB. CyFi can help decision makers protect the public by flagging the highest-risk areas in lakes, reservoirs, and rivers quickly and easily.
 
 ### Data sources
 
@@ -484,24 +492,6 @@ Screenshot of CyFi Explorer, a visualization tool that surfaces the underlying s
 # Discussion
 
 CyFi's progression from a machine learning competition that surfaced promising approaches, through subsequent user interviews and model iteration, to a deployment-ready open source package illustrates a replicable pathway for developing powerful machine learning tools in domain-specific areas.
-
-## Competition learnings
-
-
-
-### Improving generalizability
-
-One of the risks in a machine learning competition is overfitting to the test set. Competition models may picking up on patterns specific to the competition data, rather than patterns of environmental cyanobacteria conditions that hold outside of the competition. The experimentation phase sought to identify and remove competition artifacts that would hamper the generalizability of the model in an open source package.
-
-All winning solutions used a "longitude" feature in their solutions, which captured some underlying differences in sampling procedures by data providers. The competition dataset included only 14 different data providers. For example, California only samples cyanobacteria density for suspected blooms, leading to an over-representation of high density samples among competition data points within California. Predicting high severity for all values in California improves competition performance, but would not hold in the real world. 
-
-As a result, geographic features like longitude, state, and region were removed from the CyFi model. Land cover is included instead because it provides some insight into environmental conditions, but does not strongly correlate with specific data providers.
-
-
-
-
-
-
 
 ## Use cases
 
