@@ -418,7 +418,7 @@ The [model experimentation](#model-experimentation) phase combined the insights 
 ### Data decisions
 
 :::{table} Data decisions from model experimentation
-:label: tbl:areas-html
+:label: tbl:data-decisions
 <table>
   <tr>
     <th>Decision</th>
@@ -446,7 +446,7 @@ The [model experimentation](#model-experimentation) phase combined the insights 
 ### Satellite feature engineering decisions
 
 :::{table} Satellite feature engineering decisions from model experimentation
-:label: tbl:areas-html
+:label: tbl:satellite-decisions
 <table>
   <tr>
     <th>Decision</th>
@@ -470,7 +470,7 @@ The [model experimentation](#model-experimentation) phase combined the insights 
 ### Target variable decisions
 
 :::{table} Target variable decisions from model experimentation
-:label: tbl:areas-html
+:label: tbl:target-variable-decisions
 <table>
   <tr>
     <th>Decision</th>
