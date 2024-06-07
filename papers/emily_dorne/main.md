@@ -3,15 +3,12 @@ title: Cyanobacteria detection in small, inland water bodies with CyFi
 
 abstract: |
 
-  A short version of the long version that is way too long to be written as a
-  short version anyway.  Still, when considering the facts from first
-  principles, we find that the outcomes of this introspective approach is
-  compatible with the guidelines previously established.
-
-  In such an experiment it is then clear that the potential for further
-  development not only depends on previous relationships found but also on
-  connections made during exploitation of this novel new experimental
-  protocol.
+  Harmful algal blooms (HABs) pose major health risks to human and aquatic life. Methods exist to automatically detect large, slow-moving HABs in the ocean, but fall short for smaller, more dynamic blooms in critical inland water bodies like lakes, reservoirs, and rivers. This paper describes the development of CyFi, an open-source Python package that uses satellite imagery and machine learning to detect cyanobacteria. CyFi addresses gaps in inland detection by incorporating higher-resolution Sentinel-2 satellite data, a computationally efficient tree-based model, and image visualization functionality.
+  
+  CyFi was developed in three phases:
+  1. A **machine learning competition** used crowd-sourcing to surface the most effective data sources, feature generation methods, and model architectures for modeling cyanobacteria
+  2. **User interviews** with water quality managers provided insight into how automatic detection could integrate with on-the-ground decision-making workflows
+  3. **Model experimentation** identified the best winning methods to support a single, robust, generalizable cyanobacteria model, and made that model available through a user-friendly, reproducible, well-documented repository.
 ---
 
 - [ ] TODO: write abstract
