@@ -252,7 +252,7 @@ The distance between each sample and the nearest water body was calculated using
   </tr>
   <tr>
     <td>Train the model to predict log density</td>
-    <td>We find transforming density into a log scale for model training and prediction yields better accuracy, as the underlying data is highly skewed. About 75% of samples have a density less than 400,000 cell/mL, but there are extreme outliers with densities as high as 800,000,000 cells/mL. A log scale helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.</td>
+    <td>We find transforming density into a log scale for model training and prediction yields better accuracy, as the underlying data is highly skewed by a small number of extremely high-density outliers. A log scale helps the model learn that incorrectly estimating a density of 100,000 when the true density is 0 is much more important than incorrectly estimating a density of 1,100,000 when the true density is 1,000,000. The estimate a user sees has been converted back into (non-log) density.</td>
   </tr>
 </table>
 :::
