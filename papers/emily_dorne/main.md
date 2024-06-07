@@ -148,7 +148,7 @@ The competition showed that Sentinel-2 contains sufficient information for gener
         <td>✔<br><small>Color value statistics</small></td>
         <td>✔<br><small>Temperature</small></td>
         <td></td>
-        <td>✔<br><small>Region Location</small></td>
+        <td>✔<br><small>Region<br>Location</small></td>
     </tr>
     <tr>
         <td>2nd Place</td>
