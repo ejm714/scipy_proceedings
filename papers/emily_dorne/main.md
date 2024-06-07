@@ -233,7 +233,7 @@ The distance between each sample and the nearest water body was calculated using
 
 Technical experimentation alone is insufficient to build a tool that effectively addresses a real-world problem. Understanding user needs and day-to-day processes helps enable integration with existing workflows and increases the likelihood of adoption. The table below synthesizes key insights gleaned from [user interviews](#user-interviews), and outlines how each insight supported the development of a user-friendly package.
 
-```{list-table} CyFi design decisions rooted in human-centered design interviews
+```{list-table} CyFi design decisions rooted in HCD interviews
 :label: tbl:interview_takeaways
 :header-rows: 1
 * - Interview insight
@@ -271,7 +271,7 @@ The Climate Research Data Package **Land Cover Gridded Map** (2020) categorizes 
 Each observation (or "sampling point") is a unique combination of date, latitude, and longitude. Feature generation for each observation is as follows:
 
   1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
-  2. Select the most recent image that has a bounding box containing less than 5% cloudy pixels. If none of the images meet this criteria, no prediction is made for that sampling point.
+  2. Select the most recent image that has a bounding box containing less than 5% cloud pixels. If none of the images meet this criteria, no prediction is made for that sampling point.
   3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band.
   4. Generate band summary statistics (e.g., mean, 95th percentile) and ratios (e.g, green-blue ratio, NDVI) using 15 different Sentinel-2 bands. The full list of satellite image features is here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L93-L121
   5. Look up static land cover map data for the sampling point, and combine land cover information with satellite features.
