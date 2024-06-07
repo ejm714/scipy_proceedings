@@ -132,14 +132,6 @@ Model experimentation summary, with final selections in bold.
 
 During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
 
-### Reducing noise in the training data
-
-A number of winners pointed out that upon inspection of satellite imagery, some competition data points appeared to be outside of any water body. A small amount of noise in competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Including these noisy data points in the CyFi training data may have resulted in a model that predicted error, rather than one based on environmental conditions.
-
-GPS coordinates are often recorded from a dock or parking lot near a sampling location. In these cases, the bounding box used to generate features would still pick up on relevant water-based characteristics. Filtering out samples that are far from any water body, and keeping points that are on land but *near* water pixels, is the best method to separate relevant data from incorrect coordinates.
-
-The distance between each sample and the nearest water body was calculated using the European Space Agency (ESA) [WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. Samples farther than 550m from a water body were excluded to help ensure that the relevant water body fell within the portion of the satellite image from which features were calculated. The WorldCover dataset was chosen over Sentinel-2's scene classification band as the water classification appeared to be more reliable based on visual review of samples.
-
 # Results
 
 ## Competition takeaways
@@ -234,6 +226,12 @@ The [model experimentation](#model-experimentation) phase did not explore altern
 :::
 
 One of the risks in a machine learning competition is overfitting to the test set. Competition models may pick up on patterns specific to the competition data, rather than patterns of environmental cyanobacteria conditions that hold outside of the competition. The experimentation phase was additionally useful in identifying and removing competition artifacts that would hamper the generalizability of the model in an open source package. For exmaple, all winning solutions used a "longitude" feature in their solutions, which captured some underlying differences in sampling procedures by the 14 data providers for the competition. For example, California only samples cyanobacteria density for suspected blooms, leading to an over-representation of high density samples among competition data points within California. Predicting high severity for all values in California improves competition performance, but would not hold in the real world. As a result, geographic features like longitude, state, and region were not used for deployment-ready CyFi model.
+
+Competitions can also surface data quality issues. A number of winners pointed out that upon inspection of satellite imagery, some competition data points appeared to be outside of any water body. A small amount of noise in competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Including these noisy data points in the CyFi training data may have resulted in a model that predicted error, rather than one based on environmental conditions.
+
+GPS coordinates are often recorded from a dock or parking lot near a sampling location. In these cases, the bounding box used to generate features would still pick up on relevant water-based characteristics. Filtering out samples that are far from any water body, and keeping points that are on land but *near* water pixels, is the best method to separate relevant data from incorrect coordinates.
+
+The distance between each sample and the nearest water body was calculated using the European Space Agency (ESA) [WorldCover 10m 2021](https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200) product on Google Earth Engine. Samples farther than 550m from a water body were excluded to help ensure that the relevant water body fell within the portion of the satellite image from which features were calculated. The WorldCover dataset was chosen over Sentinel-2's scene classification band as the water classification appeared to be more reliable based on visual review of samples.
 
 ## User interview takeaways
 
@@ -515,7 +513,7 @@ Multiple states rely on visual inspection of a submitted photo to confirm a bloo
 
 ## Future directions
 
-While CyFi represents a significant step forward in detecting cyanobacteria from satellite imagery, challenges remain. 
+While CyFi represents a significant step forward in detecting cyanobacteria from satellite imagery, challenges remain.
 
 CyFi is the least reliable for the following cases:
 - In very narrow or small waterways
