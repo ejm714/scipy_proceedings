@@ -194,7 +194,7 @@ The [model experimentation](#model-experimentation) phase did not explore altern
   </tr>
   <tr>
     <td>Use Sentinel-2 as the sole satellite source</td>
-    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. Applying this filter further decreased the train set size from 11,299 to 8,979 and the test set size from 4,938 to 4,035.</td>
+    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. This further decreased the train set size from 11,299 to 8,979 and the test set size from 4,938 to 4,035.</td>
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
@@ -327,9 +327,7 @@ Location and distribution of training and evaluation data for CyFi.
 
 ### Performance
 
-CyFi was evaluated using ground measurements from 12 data providers spanning the time range August 2015 to December 2021. CyFi was able to generate estimates for 2,880 of the 4,035 points in the test set. The remaining points did not have a valid satellite image from which to generate an estimate, meaning there was no satellite image within 30 days of the sampling date where cloud pixels accounted for no more than 5% of the pixels in the bounding box.
-
-Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
+CyFi was evaluated using 2,880[^footnote-3] ground measurements from 12 data providers spanning the time range August 2015 to December 2021. Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
 
 :::{figure} eval_data_providers.webp
 :label: fig:eval_data
@@ -560,3 +558,4 @@ CyFi is a powerful tool for identifying high and low levels of cyanobacteria, an
 
 [^footnote-1]: @ttb_results
 [^footnote-2]: At the equator, a longitude value to 2 decimal degrees is only accurate to around a 1km distance [@decimal_degrees].
+[^footnote-3]: CyFi did not produce cyanobacteria estimates for the remaining 1,155 points in the test due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
