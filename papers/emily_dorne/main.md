@@ -72,7 +72,7 @@ In the Tick Tick Bloom challenge, over 1,300 participants competed to detect cya
 Labeled samples used in the Tick Tick Bloom competition colored by dataset provider.
 :::
 
-The labels were divided into train and set sets, where train labels were provided to participants and test labels were used to evaluate model performance and kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage. To address this, clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. Scikit-learn's DBSCAN [@sklearn; @dbscan] was used to divide all data points into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
+The labels were divided into train and set sets, where 17,060 train labels were provided to participants and 6,510 test labels were used to evaluate model performance and kept confidential from participants. Lakes in close proximity can experience similar bloom-forming conditions, presenting a risk of leakage. To address this, clustering methods were used to maximize the distance between every train set point and every test set point, decreasing the likelihood that participants could gain insight into any test point density based on the training set. Scikit-learn's DBSCAN [@sklearn; @dbscan] was used to divide all data points into spatial clusters. Each cluster was then randomly assigned to either the train or test dataset, such that no test data point was within 15 kilometers of a train data point.
 
 Participants predicted a severity category for a given sampling point as shown in @tbl:severity_categories. These ranges were informed by EPA and WHO guidelines [@epa_guidelines; @who_guidelines].
 
@@ -119,7 +119,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
 Model experimentation summary, with final selections in bold.
 :::
 
-During experimentation, the model was trained on roughly 13,000 samples and evaluated on a holdout validation set of roughly 5,000 samples. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
+During experimentation, the competition train-test split was maintained <TODO: add link>, but samples prior to the launch of Sentinel-2 were removed as well as points calculated to be farther than 550m away from a water body <TODO: add link>. This resulted in a final train set size of 8,979 and a test set size of 4,035. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
 
 ### User interviews
 
@@ -189,12 +189,12 @@ The [model experimentation](#model-experimentation) phase did not explore altern
     <th>Explanation</th>
   </tr>
   <tr>
-    <td>Filter points farther than 550m from a water body</td>
-    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details).</td>
+    <td>Use Sentinel-2 as the sole satellite source</td>
+    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. Applying this filter decreased the train set size from 17,060 to 11,299 and the test set size from 6,510 to 4,938.</td>
   </tr>
   <tr>
-    <td>Use Sentinel-2 as the sole satellite source</td>
-    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. This decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035.</td>
+    <td>Filter points farther than 550m from a water body</td>
+    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details). Applying this filter decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035</td>
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
@@ -327,7 +327,9 @@ Location and distribution of training and evaluation data for CyFi.
 
 ### Performance
 
-CyFi was evaluated using 2,880 ground measurements from 12 data providers spanning the time range August 2015 to December 2021. Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
+CyFi was evaluated using ground measurements from 12 data providers spanning the time range August 2015 to December 2021. CyFi was able to generate estimates for 2,880 of the 4,035 points in the test set. The remaining points did not have a valid satellite image from which to generate an estimate, meaning there was no satellite image within 30 days of the sampling date where cloud pixels accounted for no more than 5% of the pixels in the bounding box.
+
+Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
 
 :::{figure} eval_data_providers.webp
 :label: fig:eval_data
