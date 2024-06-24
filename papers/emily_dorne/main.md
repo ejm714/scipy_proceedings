@@ -189,12 +189,12 @@ The [model experimentation](#model-experimentation) phase did not explore altern
     <th>Explanation</th>
   </tr>
   <tr>
-    <td>Use Sentinel-2 as the sole satellite source</td>
-    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. Applying this filter decreased the train set size from 17,060 to 11,299 and the test set size from 6,510 to 4,938.</td>
+    <td>Filter points farther than 550m from a water body</td>
+    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details). Applying this filter decreased the train set size from 17,060 to 11,299 and the test set size from 6,510 to 4,938.</td>
   </tr>
   <tr>
-    <td>Filter points farther than 550m from a water body</td>
-    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details). Applying this filter further decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035</td>
+    <td>Use Sentinel-2 as the sole satellite source</td>
+    <td>Landsat data primarily only added value for the time period prior to July 2015, when Sentinel-2 data became available. Most applications of CyFi will be forward looking, meaning Sentinel-2 data will be available. The slowest part of the prediction process is downloading satellite data, imposing a significant efficiency cost for incorporating Landsat as a second source. To rely only on Sentinel-2, any samples prior to the launch of Sentinel-2 were removed from the training and evaluation sets. Applying this filter further decreased the train set size from 11,299 to 8,979 and the test set size from 4,938 to 4,035.</td>
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
@@ -348,7 +348,7 @@ CyFi detects 81% of **blooms** with 70% accuracy. Based on user interviews, mode
 
 Lastly, CyFi detect 53% of **severe blooms** with 71% accuracy. These locations pose the highest risk of severe negative health impacts, and are critical to flag for decision makers to prioritize for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery used by CyFi may be sufficient to issue an advisory without additional sampling. CyFi enables this step with its [CyFi Explorer](#cyfi-explorer) functionality.
 
-Model accuracy can vary based on bloom severity as well as location and other attributes of the sampling point, so the performance metrics above will vary based on the distribution in the evaluation set. We conducted a small out of sample evaluation using California's sampling points from summer 2023 (231 total observations) and found that estimated cyanobacteria densities were highly correlated with the advisory level that was issued. While the relative ordering of points based on estimated severity was promising, absolute densities were consistently overestimated. This reinforces that the main immediate use case of CyFi is to identify high and low priority areas and to inform rather than replace ground sampling activities.
+Model accuracy can vary based on bloom severity as well as location and other attributes of the sampling point, so the performance metrics above will vary based on the distribution in the evaluation set. We conducted a small out of sample evaluation using California's sampling points from summer 2023 (231 total observations) and found that estimated cyanobacteria densities were highly correlated with the advisory level that was issued. While the relative ordering of points based on estimated severity was promising, absolute cyanobacteria densities were consistently overestimated. This reinforces that the main immediate use case of CyFi is to identify high and low priority areas and to inform rather than replace ground sampling activities.
 
 ### Benchmark comparison
 
