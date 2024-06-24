@@ -300,11 +300,12 @@ The Climate Research Data Package **Land Cover Gridded Map** (2020) categorizes 
 
 Each observation (or "sampling point") is a unique combination of date, latitude, and longitude. Feature generation for each observation is as follows:
 
-  1. Identify relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
+  1. Download up to 15 relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
   2. Select the most recent image that has a bounding box containing less than 5% cloud pixels. If none of the images meet this criteria, no prediction is made for that sampling point.
   3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band.
   4. Generate band summary statistics (e.g., mean, 95th percentile) and ratios (e.g, green-blue ratio, NDVI) using 15 different Sentinel-2 bands. The full list of satellite image features is here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L93-L121
-  5. Look up static land cover map data for the sampling point, and combine land cover information with satellite features.
+  5. Calculate two satellite metadata features: 1) the month of selected satellite image and 2) the number of days between the sampling date and the satellite image capture.
+  6. Look up static land cover map data for the sampling point, and combine land cover information with satellite features.
   
 :::{figure} feature_creation.webp
 :label: fig:feature_creation
