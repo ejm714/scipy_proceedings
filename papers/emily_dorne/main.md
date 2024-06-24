@@ -119,7 +119,7 @@ The table below summarizes the matrix of experiments that were conducted. Model 
 Model experimentation summary, with final selections in bold.
 :::
 
-During experimentation, the competition train-test split was maintained <TODO: add link>, but samples prior to the launch of Sentinel-2 were removed as well as points calculated to be farther than 550m away from a water body <TODO: add link>. This resulted in a final train set size of 8,979 and a test set size of 4,035. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
+During experimentation, the [competition](#machine-learning-competition) train-test split was maintained, but samples prior to the launch of Sentinel-2 as well as sampling points more than 550m away from a water body were removed, as outlined in @tbl:data-decisions. This resulted in a final train set size of 8,979 points and a test set size of 4,035 points. Performance was evaluated based on a combination of root mean squared error, mean absolute error, mean absolute percentage error, and regional root mean squared error, along with manual review and visualizations of predictions. Standard best practices were used to inform hyperparameters tuning for the final model.
 
 ### User interviews
 
@@ -194,7 +194,7 @@ The [model experimentation](#model-experimentation) phase did not explore altern
   </tr>
   <tr>
     <td>Filter points farther than 550m from a water body</td>
-    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details). Applying this filter decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035</td>
+    <td>A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, or a lack of adequate precision in recorded latitude and longitude. Excluding points that are farther than 500m from a water body helps ensure that the model learns from real-world environmental characteristics of cyanobacteria blooms rather than patterns in human error (see below for additional details). Applying this filter further decreased the train set size from 11,299 to 8,979, and the test set size from 4,938 to 4,035</td>
   </tr>
   <tr>
     <td>Exclude climate and elevation features</td>
