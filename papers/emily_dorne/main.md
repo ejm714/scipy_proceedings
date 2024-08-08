@@ -307,7 +307,7 @@ Each observation (or "sampling point") is a unique combination of date, latitude
   1. Download up to 15 relevant Sentinel-2 tiles based on a bounding box of 2,000m around the sampling point and a time range of 30 days prior to (and including) the sampling date.
   2. Select the most recent image that has a bounding box containing less than 5% cloud pixels. If none of the images meet this criteria, no prediction is made for that sampling point.
   3. Filter the pixels in the bounding box to the water area using the scene classification (SCL) band.
-  4. Generate band summary statistics (e.g., mean, 95th percentile) and ratios (e.g, green-blue ratio, NDVI) using 15 different Sentinel-2 bands. The full list of satellite image features is here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L93-L121
+  4. Generate band summary statistics (e.g., mean, 95th percentile) and ratios (e.g, green-blue ratio, NDVI) using 15 different Sentinel-2 bands. For example, in the second table below the B02 (blue), B03 (green), and B04 (red) Sentinel-2 bands are highlighted. The full list of satellite image features is here: https://github.com/drivendataorg/cyfi/blob/ad239c8569d6ef48b8769b3bebe98029ea6ecb6f/cyfi/config.py#L93-L121
   5. Calculate two satellite metadata features: 1) the month of selected satellite image and 2) the number of days between the sampling date and the satellite image capture.
   6. Look up static land cover map data for the sampling point, and combine land cover information with satellite features.
   
@@ -316,7 +316,7 @@ Each observation (or "sampling point") is a unique combination of date, latitude
 :width: 600px
 Mock up of satellite data selection and processing. The dot represents the sample point; the square represents the 2,000m bounding box around the sample point. The multiple squares outlined in black represents the multiple satellite image contenders within the lookback period. The orange outlined square indicates the selected, most-recent satellite image. The blue shaded area indicates the water pixels in the bounding box from which features are calculated.
 
-Note that not all features are represented in the columns.
+Note that not all features are represented in the columns. The table above shows a few features calculated based on the B02 (blue), B03 (green) and B04 (red) Sentinel-2 bands.
 :::
 
 ### Model
@@ -345,11 +345,11 @@ We use the following categories based on @who_guidelines for evaluation:
 - **Bloom:** Cyanobacteria density is at least 20,000 cells/mL
 - **Severe bloom:** Cyanobacteria density is greater than 100,000 cells/mL. Severe blooms are a subset of blooms
 
-On this evaluation dataset, CyFi detects 48% of **non-blooms** with 63% accuracy. Being able to detect places *not* likely to contain blooms enables ground sampling staff to de-prioritize low-risk sampled locations and better allocate limited resources.
+On this evaluation dataset, CyFi detects 48% of **non-blooms** with 63% precision. Being able to detect places *not* likely to contain blooms enables ground sampling staff to de-prioritize low-risk sampled locations and better allocate limited resources.
 
-CyFi detects 81% of **blooms** with 70% accuracy. Based on user interviews, moderate blooms are important to identify because they should be prioritized for sampling. There may be negative public health impacts and more precise toxin analysis is needed.
+CyFi detects 81% of **blooms** with 70% precision. Based on user interviews, moderate blooms are important to identify because they should be prioritized for sampling. There may be negative public health impacts and more precise toxin analysis is needed.
 
-Lastly, CyFi detect 53% of **severe blooms** with 71% accuracy. These locations pose the highest risk of severe negative health impacts, and are critical to flag for decision makers to prioritize for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery used by CyFi may be sufficient to issue an advisory without additional sampling. CyFi enables this step with its [CyFi Explorer](#cyfi-explorer) functionality.
+Lastly, CyFi detect 53% of **severe blooms** with 71% precision. These locations pose the highest risk of severe negative health impacts, and are critical to flag for decision makers to prioritize for public health action (e.g., issuing advisories). In the most severe cases, additional visual inspection of the satellite imagery used by CyFi may be sufficient to issue an advisory without additional sampling. CyFi enables this step with its [CyFi Explorer](#cyfi-explorer) functionality.
 
 Model accuracy can vary based on bloom severity as well as location and other attributes of the sampling point, so the performance metrics above will vary based on the distribution in the evaluation set. After concluding the model experimentation phase, we conducted a small out-of-sample evaluation using new data collected by California during summer 2023 (231 total observations). We found that estimated cyanobacteria densities were highly correlated with the advisory level that was issued. While the relative ordering of points based on estimated severity was promising, absolute cyanobacteria densities were consistently overestimated. This reinforces that the main immediate use case of CyFi is to identify comparatively higher and lower priority areas, and to inform rather than replace ground sampling activities.
 
@@ -377,6 +377,12 @@ CyFi is designed to be simple to use. To get started, users can install CyFi wit
 
 ```bash
 $ pip install cyfi
+```
+
+Alternatively, CyFi can be installed with conda. For Mac users, the conda installation is recommended to avoid a known [issue](https://github.com/drivendataorg/cyfi/issues/114) with pip installation of LightGBM.
+
+```bash
+conda install -c conda-forge cyfi
 ```
 
 Cyanobacteria predictions can then be generated with a single command. The only information needed to generate a prediction is a location (latitude and longitude) and date.
