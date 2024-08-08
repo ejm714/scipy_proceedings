@@ -359,6 +359,29 @@ Performance on the test set by region. There were 958 test data points in the mi
 
 Model accuracy can vary based on bloom severity as well as location and other attributes of the sampling point, so the performance metrics above will vary based on the distribution in the evaluation set. After concluding the model experimentation phase, we conducted a small out-of-sample evaluation using new data collected by California during summer 2023 (231 total observations). We found that estimated cyanobacteria densities were highly correlated with the advisory level that was issued. While the relative ordering of points based on estimated severity was promising, absolute cyanobacteria densities were consistently overestimated. This reinforces that the main immediate use case of CyFi is to identify comparatively higher and lower priority areas, and to inform rather than replace ground sampling activities.
 
+:::{table} Predicted cyanobacteria density compared to ground truth advisory level for out-of-sample California data from 2023. Predicted density increases with the severity of the advisory level, although absolute value is generally overpredicted. The median predicted density for samples categorized as No Bloom falls into the "Moderate" density range based on WHO severity levels. The median densities for Caution and Warning / Danger fall into the "High" WHO severity level.
+:label: tbl:ca-comparison
+<table>
+  <tr>
+    <th>Ground truth advisory level</th>
+    <th>Median predicted cyanobacteria density</th>
+  </tr>
+  <tr>
+    <td>No bloom</td>
+    <td>92,560 cells/mL</td>
+  </tr>
+  <tr>
+    <td>Caution</td>
+    <td>206,923 cells/mL</td>
+  </tr>
+  <tr>
+    <td>Warning / Danger</td>
+    <td>295,558 cells/mL</td>
+  </tr>
+</table>
+:::
+
+
 ### Benchmark comparison
 
 An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 and was developed through the [Cyanobacteria Assessment Network (CyAN)](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
