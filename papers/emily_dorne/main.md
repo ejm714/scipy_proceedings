@@ -41,7 +41,7 @@ These ecological impacts can have devastating economic consequences for local in
 
 Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
 
-Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection use the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 [@doi:10.3390/rs13214347] to approximate chlorphyll absorption. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorphyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
+Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 [@doi:10.3390/rs13214347] to approximate chlorphyll absorption. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorphyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
 
 :::{figure} resolution_sentinel_2.webp
 :label: fig:10m
@@ -109,7 +109,7 @@ The end goal is regularly generated predictions of cyanobacteria levels surfaced
 
 ### Model experimentation
 
-CyFi was developed through an additional model experimentation phase, which combined and iterated on the most useful pieces from competition-winning models, and simplified and restructured code to transform it into a runnable pipeline.[^footnote-7] Additional model testing helped determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting.
+CyFi was developed through an additional model experimentation phase, which combined and iterated on the most useful pieces from competition-winning models, and simplified and restructured code to transform it into a runnable pipeline.[^footnote-2] Additional model testing helped determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting.
 
 The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and which target variable was predicted.
 
@@ -177,7 +177,7 @@ The competition showed that Sentinel-2 bands contain sufficient information for 
 
 All winners used Level-2 satellite imagery instead of Level-1, likely because it already includes useful atmospheric corrections. Sentinel-2 data is higher resolution than Landsat, and proved to be more useful in modeling.
 
-All winners also used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place explored training a CNN model but found the coarse resolution of the satellite imagery overly constraining, particularly when using Landsat imagery. Despite deep learning models often being thought of as the go-to for image data, decision tree models can work particularly well with satellite imagery where the task is point estimation rather than segmentation.[^footnote-5] Decision tree models also have a number of advantages over deep learning models as they boast faster training and inference, do not require a GPU, and provide greater interpretability. This enables more rapid experimentation and iteration in training and supports near real-time inference used limited compute.
+All winners also used gradient boosted decision tree models such as LightGBM [@lightgbm], XGBoost [@doi:10.48550/arXiv.1603.02754], and CatBoost [@doi:10.48550/arXiv.1810.11363]. First place explored training a CNN model but found the coarse resolution of the satellite imagery overly constraining, particularly when using Landsat imagery. Despite deep learning models often being thought of as the go-to for image data, decision tree models can work particularly well with satellite imagery where the task is point estimation rather than segmentation.[^footnote-3] Decision tree models also have a number of advantages over deep learning models as they boast faster training and inference, do not require a GPU, and provide greater interpretability. This enables more rapid experimentation and iteration in training and supports near real-time inference using limited compute.
 
 ## Model experimentation takeaways
 
@@ -213,7 +213,7 @@ The [model experimentation](#model-experimentation) phase did not explore altern
 
 One of the risks in a machine learning competition is overfitting to the test set. Competition models may pick up on patterns specific to the competition data, rather than patterns of environmental cyanobacteria conditions that generalize outside of the competition. The experimentation phase worked to identify and remove competition artifacts that would hamper the generalizability of the model in an open source package. For example, all winning solutions used a "longitude" feature in their models, which captured some underlying differences in sampling procedures by the 14 data providers for the competition. For example, data-providing organizations in California only conduct toxin analysis for suspected blooms, leading to an over-representation of high density samples among competition data points in California. Predicting high severity for all points in California served well in the competition setting, but would not generalize to the real world. As a result, geographic features like longitude, state, and region were not used for the deployed CyFi model.
 
-Competitions can also surface data quality issues. A number of winners pointed out that upon inspection of satellite imagery, some competition data points appeared to be outside of any water body. A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, and a lack of adequate precision in recorded latitude and longitude.[^footnote-2] Including these noisy data points in a training pipeline could result in a model that predicts error, rather than one based on environmental conditions.
+Competitions can also surface data quality issues. A number of winners pointed out that upon inspection of satellite imagery, some competition data points appeared to be outside of any water body. A small amount of noise in the competition dataset was caused by a combination of human error, GPS device error, and a lack of adequate precision in recorded latitude and longitude.[^footnote-4] Including these noisy data points in a training pipeline could result in a model that predicts error, rather than one based on environmental conditions.
 
 GPS coordinates are often recorded from a dock or parking lot near a sampling location. In these cases, the bounding box used to generate features would still pick up on relevant water-based characteristics. Filtering out samples that are far from any water body, and keeping points that are on land but *near* water pixels, is the best method to separate relevant data from incorrect coordinates.
 
@@ -330,11 +330,11 @@ The model was trained and evaluated using "in situ" labels collected manually by
 Location and distribution of training and evaluation data for CyFi.
 :::
 
-CyFi was ultimately trained on 5,721 of the 8,979 train set observations due to satellite imagery availability[^footnote-3].
+CyFi was ultimately trained on 5,721 of the 8,979 train set observations due to satellite imagery availability[^footnote-5].
 
 ### Performance
 
-CyFi was evaluated using 2,880[^footnote-4] ground measurements from 12 data providers spanning the time range August 2015 to December 2021. Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
+CyFi was evaluated using 2,880[^footnote-6] ground measurements from 12 data providers spanning the time range August 2015 to December 2021. Given that CyFi relies on Sentinel-2 imagery, the earliest date in the evaluation set aligns with the launch of Sentinel-2 (mid 2015). Of these points, 1,153 were low severity, 504 were moderate severity, and 1,223 were high severity according to ground measurement data. Some states only conduct toxin analysis when blooms are suspected, which may account for the large number of high-severity observations in the evaluation set.
 
 :::{figure} eval_data_providers.webp
 :label: fig:eval_data
@@ -398,7 +398,7 @@ CyFi correctly identifies 306 of 389 blooms, while CyAN correctly identifies 169
 
 Comprehensive instructions for using CyFi can be found in the [CyFi docs](https://cyfi.drivendata.org/). The below provides an overview of some of CyFi's key functionality.
 
-CyFi is designed to be simple to use. To get started, users can install CyFi with pip.[^footnote-6]
+CyFi is designed to be simple to use. To get started, users can install CyFi with pip.[^footnote-7]
 
 ```bash
 $ pip install cyfi
@@ -587,9 +587,9 @@ As decision-makers begin experimenting with CyFi, we recommend calculating histo
 CyFi is a powerful tool for identifying high and low levels of cyanobacteria, and enables humans to make more timely and targeted decisions when issuing public health guidances around current cyanobacteria levels. Areas with low-density cyanobacteria counts can be excluded from ground sampling to better prioritize limited resources, while areas with high-density cyanobacteria counts can be prioritized for public health action. The development of CyFi illustrates the utility of machine learning competitions as a first step toward open source tools. CyFi's primary use cases show how machine learning can be incorporated into human workflows to enable more efficient and more informed decision making.
 
 [^footnote-1]: @ttb_results
-[^footnote-2]: At the equator, a longitude value to 2 decimal degrees is only accurate to around a 1km distance [@decimal_degrees].
-[^footnote-3]: CyFi did not produce cyanobacteria estimates for the remaining points in the train set due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
-[^footnote-4]: CyFi did not produce cyanobacteria estimates for the remaining 1,155 points in the test set due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
-[^footnote-5]: The success of decision tree models in the Tick Tick Bloom competition is consistent with other DrivenData competitions where the task was point-based prediction from satellite imagery (i.e., estimating the [amount of water in snowpack](https://github.com/drivendataorg/snowcast-showdown) and estimating [levels of air pollution](https://github.com/drivendataorg/nasa-airathon/tree/main/pm25)).
-[^footnote-6]: Alternatively, CyFi can be installed with conda (`conda install -c conda-forge cyfi`), which is recommended for M1 Mac users as of July 2024 due to a known issue with the pip installation of LightGBM.
-[^footnote-7]: The authors would like to thank Yang Xu, Andrew Wheeler, and Raphael Kimina, the Tick Tick Bloom competition winners whose approaches provided the foundation for CyFi.
+[^footnote-2]: The authors would like to thank Yang Xu, Andrew Wheeler, and Raphael Kimina, the Tick Tick Bloom competition winners whose approaches provided the foundation for CyFi.
+[^footnote-3]: The success of decision tree models in the Tick Tick Bloom competition is consistent with other DrivenData competitions where the task was point-based prediction from satellite imagery (i.e., estimating the [amount of water in snowpack](https://github.com/drivendataorg/snowcast-showdown) and estimating [levels of air pollution](https://github.com/drivendataorg/nasa-airathon/tree/main/pm25)).
+[^footnote-4]: At the equator, a longitude value to 2 decimal degrees is only accurate to around a 1km distance [@decimal_degrees].
+[^footnote-5]: CyFi did not produce cyanobacteria estimates for the remaining 3,258 points in the train set due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
+[^footnote-6]: CyFi did not produce cyanobacteria estimates for the remaining 1,155 points in the test set due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
+[^footnote-7]: Alternatively, CyFi can be installed with conda (`conda install -c conda-forge cyfi`), which is recommended for M1 Mac users as of July 2024 due to a known issue with the pip installation of LightGBM.
