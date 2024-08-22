@@ -378,7 +378,6 @@ Model accuracy can vary based on bloom severity as well as location and other at
 This table shows the promise of CyFi in relative ordering of points by severity level as well as the limitations of absolute predicted values. Predicted density correctly increases with the severity of the advisory level, although absolute density is generally overpredicted. The median predicted density for samples categorized as No Bloom falls into the "Moderate" density range based on WHO severity levels. The median densities for Caution and Warning / Danger fall into the "High" WHO severity level. The California data in the training set was heavily biased toward severe blooms due to California's sampling protocols. A promising strategy for mitigating this overestimation is the inclusion of more true negative points in the training data.
 :::
 
-
 ### Benchmark comparison
 
 An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 and was developed through the [Cyanobacteria Assessment Network (CyAN)](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
