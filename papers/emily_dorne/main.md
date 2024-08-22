@@ -109,7 +109,7 @@ The end goal is regularly generated predictions of cyanobacteria levels surfaced
 
 ### Model experimentation
 
-CyFi was developed through an additional model experimentation phase, which combined and iterated on the most useful pieces from competition-winning models, and simplified and restructured code to transform it into a runnable pipeline. Additional model testing helped determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting.
+CyFi was developed through an additional model experimentation phase, which combined and iterated on the most useful pieces from competition-winning models, and simplified and restructured code to transform it into a runnable pipeline.[^footnote-7] Additional model testing helped determine which winning approaches were the most robust, accurate, and generalizable outside of the competition setting.
 
 The table below summarizes the matrix of experiments that were conducted. Model experimentation informed key decisions around which data sources were used, how satellite imagery was selected and processed, and which target variable was predicted.
 
@@ -592,3 +592,4 @@ CyFi is a powerful tool for identifying high and low levels of cyanobacteria, an
 [^footnote-4]: CyFi did not produce cyanobacteria estimates for the remaining 1,155 points in the test set due to a lack of valid satellite data. In order to produce an estimate, there must be at least one satellite image within 30 days prior to the sampling date where cloud pixels account for less than 5% of the pixels in the bounding box around the sampling point.
 [^footnote-5]: The success of decision tree models in the Tick Tick Bloom competition is consistent with other DrivenData competitions where the task was point-based prediction from satellite imagery (i.e., estimating the [amount of water in snowpack](https://github.com/drivendataorg/snowcast-showdown?tab=readme-ov-file#winning-submissions) and estimating [levels of air pollution](https://github.com/drivendataorg/nasa-airathon/tree/main/pm25#winning-submissions)).
 [^footnote-6]: Alternatively, CyFi can be installed with conda (`conda install -c conda-forge cyfi`), which is recommended for M1 Mac users as of July 2024 due to a known issue with the pip installation of LightGBM.
+[^footnote-7]: The authors would like to thank Yang Xu, Andrew Wheeler, and Raphael Kimina, the Tick Tick Bloom competition winners whose approaches provided the foundation for CyFi.
