@@ -135,7 +135,7 @@ To design a package that optimally addresses on-the-ground user needs, we conduc
 
 The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) was to identify the most useful data sources, features, and modeling methods for cyanobacteria estimation in small, inland water bodies. There was particular interest around the use of Sentinel-2 data, which has significantly higher resolution than Sentinel-3 and is more suited to smaller water bodies. However, Sentinel-2 does not contain sensors that can spectrophotometrically measure chlorophyll, which is how most Sentinel-3-based cyanobacteria estimates are derived.
 
-The competition showed that the visual bands in Sentinel-2 contain sufficient information for generating accurate cyanobacteria estimates with machine learning. Below is a summary of which datasets were used by winners.
+The competition showed that Sentinel-2 bands contain sufficient information for generating accurate cyanobacteria estimates with machine learning. Below is a summary of which datasets were used by winners.
 
 :::{table} Data sources used by Tick Tick Bloom competition winners
 :label: tbl:winner-data-sources
@@ -316,7 +316,7 @@ Each observation (or "sampling point") is a unique combination of date, latitude
 :width: 600px
 Mock up of satellite data selection and processing. The dot represents the sample point; the square represents the 2,000m bounding box around the sample point. The multiple squares outlined in black represents the multiple satellite image contenders within the lookback period. The orange outlined square indicates the selected, most-recent satellite image. The blue shaded area indicates the water pixels in the bounding box from which features are calculated.
 
-Note that not all features are represented in the columns. The table above shows a few features calculated based on the B02 (blue), B03 (green) and B04 (red) Sentinel-2 bands.
+Note that not all features are represented in the columns. The table above shows a few features calculated based on the B01 (aerosol), B02 (blue), B03 (green), B04 (red), and B05 (red edge) [Sentinel-2 bands](https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/bands/).
 :::
 
 ### Model
