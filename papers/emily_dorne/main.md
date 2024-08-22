@@ -330,7 +330,7 @@ The model was trained and evaluated using "in situ" labels collected manually by
 Location and distribution of training and evaluation data for CyFi.
 :::
 
-CyFi was ultimately trained on XXX of the 8,979 train set observations due to satellite imagery availability[^footnote-3].
+CyFi was ultimately trained on 5,721 of the 8,979 train set observations due to satellite imagery availability[^footnote-3].
 
 ### Performance
 
