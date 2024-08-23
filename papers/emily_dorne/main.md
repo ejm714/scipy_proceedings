@@ -41,7 +41,7 @@ These ecological impacts can have devastating economic consequences for local in
 
 Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
 
-Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 to measure chlorophyll absorption [@doi:10.3390/rs13214347]. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorophyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
+Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on chlorophyll estimates from the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 [@doi:10.3390/rs13214347]. However, the coarse 300m resolution of Sentinel-3 only captures approximately 5% of lakes in North America [@doi:10.1016/j.ecolind.2017.04.046] and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorophyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
 
 :::{figure} resolution_sentinel_2.webp
 :label: fig:10m
@@ -394,8 +394,7 @@ A comparison of CyFi and CyAN model accuracy on 756 ground sampled data points f
 
 CyFi correctly identifies 306 of 389 blooms, while CyAN correctly identifies 169 (true positives). CyFi correctly identifies 241 of 367 non-blooms, while CyAN correctly identifies 332 (true negatives).
 
-
-This performance shows it is possible to effectively detect cyanobacteria using machine learning on Sentinel-2 data. This extends cyanobacteria detection from 300m resolution to 10m resolution, therefore capturing small, inland water bodies across the U.S.
+This performance shows that CyFi offers similar accuracy as a leading tool but at 10m resolution instead of 300m. This dramatic increase in spatial granularity enables remote sensing-based bloom detection in small, inland water bodies across the U.S.
 
 ### Using CyFi
 
@@ -550,7 +549,7 @@ Screenshot of CyFi Explorer, a visualization tool that surfaces the underlying s
 
 CyFi's progression from a machine learning competition that surfaced promising approaches, through subsequent user interviews and model iteration, to a deployment-ready open source package illustrates a replicable pathway for developing powerful machine learning tools in domain-specific areas.
 
-We find that CyFi performs at least as well as a leading Sentinel-3 based tool, but has 10 times the coverage of water bodies across the U.S. due to the higher resolution of Sentinel-2 data. This dramatically expands the applicability of remote sensing-based estimates as a tool for management of HABs.
+We find that CyFi performs at least as well as a leading Sentinel-3 based tool, but has significantly greater coverage of water bodies across the U.S. due to the higher resolution of Sentinel-2 data. This dramatically expands the applicability of remote sensing-based estimates as a tool for management of HABs.
 
 ### Implications for use
 
