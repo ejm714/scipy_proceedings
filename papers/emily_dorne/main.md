@@ -41,7 +41,7 @@ These ecological impacts can have devastating economic consequences for local in
 
 Despite the severe consequences of HABs, existing monitoring tools and methods are often insufficient. Traditional approaches, such as manual water sampling and laboratory analysis, are time-consuming, labor-intensive, and provide only localized snapshots of water quality.
 
-Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 [@doi:10.3390/rs13214347] to approximate chlorphyll absorption. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorphyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
+Existing satellite-based monitoring tools offer broad coverage but fall short of the spatial resolution needed for small inland water bodies. Most are aimed at monitoring blooms in the ocean, which are larger and slower moving. Many of the leading satellite-based methods for cyanobacteria detection rely on the [Ocean and Land Colour Instrument](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) on Sentinel-3 to measure chlorophyll absorption [@doi:10.3390/rs13214347]. However, the 300m resolution of Sentinel-3 is too coarse to pick up many inland water bodies and therefore is not able to provide the data needed for effective early warning and rapid response to HAB outbreaks in lakes, reservoirs, and rivers. In addition, chlorophyll is an imperfect proxy for cyanobacteria as all types of algae contain chlorophyll-a, including non-harmful blooms [@chlorophyll].
 
 :::{figure} resolution_sentinel_2.webp
 :label: fig:10m
@@ -133,7 +133,7 @@ To design a package that optimally addresses on-the-ground user needs, we conduc
 
 ## Competition takeaways
 
-The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) was to identify the most useful data sources, features, and modeling methods for cyanobacteria estimation in small, inland water bodies. There was particular interest around the use of Sentinel-2 data, which has significantly higher resolution than Sentinel-3 and is more suited to smaller water bodies. However, Sentinel-2 does not contain sensors that can spectrophotometrically measure chlorophyll, which is how most Sentinel-3-based cyanobacteria estimates are derived.
+The overarching goal of the [Tick Tick Bloom: Harmful Algal Bloom Detection Challenge](#machine-learning-competition) was to identify the most useful data sources, features, and modeling methods for cyanobacteria estimation in small, inland water bodies. There was particular interest around the use of Sentinel-2 data, which has significantly higher resolution than Sentinel-3 and is more suited to smaller water bodies. However, Sentinel-2 does not contain the bands historically used to derive cyanobacteria estimates.
 
 The competition showed that Sentinel-2 bands contain sufficient information for generating accurate cyanobacteria estimates with machine learning. Below is a summary of which datasets were used by winners.
 
@@ -380,7 +380,7 @@ This table shows the promise of CyFi in relative ordering of points by severity 
 
 ### Benchmark comparison
 
-An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery is provided as a more objective benchmark of performance. The Cyanobacteria Index proxies chlorophyll absorption with a spectral shape algorithm using MERIS bands 7, 8 and 9 and was developed through the [Cyanobacteria Assessment Network (CyAN)](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
+An apples-to-apples comparison with one of the leading tools for cyanobacteria estimation from satellite imagery is provided as a more objective benchmark of performance. The Cyanobacteria Index is based on a spectral shape algorithm using MERIS bands 7, 8 and 9 and was developed through the [Cyanobacteria Assessment Network (CyAN)](https://oceancolor.gsfc.nasa.gov/about/projects/cyan/) [@doi:10.1016/j.hal.2017.06.001; @doi:10.4319/lo.2010.55.5.2025; @doi:10.1038/s41598-019-54453-y; @doi:10.1080/01431160802007640].
 
 Due to lower resolution of satellite imagery as well as missing data, CyAN's Cyanobacteria Index is only able to provide estimates for 30% of points in the evaluation set described in @fig:eval_data (756 points). A major advantage of CyFi is coverage of small water bodies. Over half of the points in the evaluation set were identified as "land" by CyAN due to the coarse resolution of Sentinel-3 imagery. An additional 18% of points had "no data" likely due to clouds or bad imagery.
 
@@ -393,6 +393,9 @@ A comparison of CyFi and CyAN model accuracy on 756 ground sampled data points f
 :::
 
 CyFi correctly identifies 306 of 389 blooms, while CyAN correctly identifies 169 (true positives). CyFi correctly identifies 241 of 367 non-blooms, while CyAN correctly identifies 332 (true negatives).
+
+
+This performance shows it is possible to effectively detect cyanobacteria using machine learning on Sentinel-2 data. This extends cyanobacteria detection from 300m resolution to 10m resolution, therefore capturing small, inland water bodies across the U.S.
 
 ### Using CyFi
 
@@ -458,7 +461,7 @@ SUCCESS  | Cyanobacteria estimates for 4 sample points saved to preds.csv
 
 ```
 
-Cyanobacteria estimates are saved out as a CSV that can be plugged into any existing decision-making process. For each point, the model provides an estimated density in cells per mL for detailed analysis. Densities are also discretized into severity levels based on World Health Organization (WHO) guidelines [@who_guidelines].
+Cyanobacteria estimates are saved out as a CSV that can be plugged into any existing decision-making process. For each point, the model provides an estimated density in cells per mL for detailed analysis. Densities are also discretized into severity levels based on World Health Organization guidelines [@who_guidelines].
 
 :::{table} CyFi outputted csv (`preds.csv`) containing predictions
 :label: tbl:cyfi_preds
